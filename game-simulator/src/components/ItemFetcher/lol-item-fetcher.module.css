@@ -1,0 +1,140 @@
+.itemFetcherContainer {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #121212;
+  color: #eee;
+}
+
+.itemFetcherHeader {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.toggleButton {
+  background-color: #333;
+  color: white;
+  border: 1px solid #555;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.toggleButton:hover {
+  background-color: #444;
+}
+
+.loadingText {
+  color: #aaa;
+  font-style: italic;
+}
+
+.itemsWrapper {
+  min-width: 120px;
+  min-height: 150px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.itemCard:hover {
+  border: 1px solid #888;
+}
+
+.noItemsText {
+  color: #ccc;
+}
+
+.itemsScrollContainer {
+  min-width: 142px;
+  min-height: 172px;
+  max-height: 600px;
+  max-width: 850px;
+  overflow-y: auto;
+  resize: both;
+  border: 1px solid #444;
+  padding: 10px;
+  margin-top: 1rem;
+  background-color: #1a1a1a;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1rem;
+}
+
+.itemCard {
+  background-color: #2a2a2a;
+  color: #fff;
+  border-radius: 8px;
+  padding: 0.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.selected {
+  border: 2px solid #0cf;
+}
+
+.compact {
+  padding: 0.25rem;
+}
+
+.itemImage {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  margin-bottom: 0.5rem;
+}
+
+.itemName {
+  font-weight: 600;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.detailsRow {
+  display: flex;
+  gap: 2rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.statsColumn {
+  flex: 1;
+  min-width: 300px;
+}
+
+.descriptionColumn {
+  flex: 1;
+  min-width: 300px;
+  background-color: #1a1a1a;
+  padding: 1rem;
+  border: 1px solid #444;
+  border-radius: 0.5rem;
+  color: #ccc;
+}
+
+.description {
+  line-height: 1.5;
+}
+
+.plainText {
+  font-style: italic;
+  color: #999;
+}
+
+.mainContent {
+  display: flex;
+  gap: 2rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}

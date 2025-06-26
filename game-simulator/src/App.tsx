@@ -1,17 +1,18 @@
 import { Routes, Route } from 'react-router-dom';
 import NavBar from './components/NavBar';
-import ItemFetcher from './components/lol-item-fetch';
+import ItemFetcher from './components/ItemFetcher/lol-item-fetch';
 import ChampionFetcher from './components/lol-champ-fetch';
 import SignupForm from './components/SignupForm';
 import LoginForm from './components/LoginForm';
+import Layout from './components/Layout'
 
 function Home() {
   return (
-    <>
+    <Layout>
       <h1>Game Calculator</h1>
       <ItemFetcher />
       <ChampionFetcher />
-    </>
+    </Layout>
   );
 }
 
