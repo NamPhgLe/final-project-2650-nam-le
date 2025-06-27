@@ -1,35 +1,12 @@
 import { useEffect, useState, useRef } from 'react';
-import MapFilter from '../MapFilter';
-import ItemStats from '../ItemStats/lol-item-stats';
-import styles from './lol-item-fetcher.module.css';
+import MapFilter from './lol-ItemFilters/ItemMapFilter';
+import ItemStats from '../lol-ItemStats/ItemStats';
+import styles from './Itemfetch.module.css';
+import ItemStatsFilter from './lol-ItemFilters/ItemStats/ItemStatsFilter';
+import { useFilteredItems, useAllStatKeys } from './lol-ItemFilters/FilterHooks/ItemFilter';
+import type { ItemData } from '../../types/lol-ItemTypes';
+import React from 'react';
 import axios from 'axios';
-
-interface ItemData {
-  name: string;
-  description: string;
-  colloq: string;
-  plaintext: string;
-  into?: string[];
-  from?: string[]; 
-  specialRecipe?: number;
-  inStore?: boolean;
-  hideFromAll?: boolean;
-  requiredChampion?: string;
-  requiredAlly?: string;
-  stats: Record<string, number>;
-  tags: string[];
-  maps: Record<string, boolean>;
-  gold: {
-    base: number;
-    total: number;
-    sell: number;
-    purchasable: boolean;
-  };
-  effect?: Record<string, string>;
-  depth?: number;
-  stacks?: number;
-}
-
 
 type ItemMap = Record<string, ItemData>;
 
@@ -37,20 +14,18 @@ export default function ItemFetcher() {
   const [items, setItems] = useState<ItemMap | null>(null);
   const [version, setVersion] = useState<string | null>(null);
   const [showText, setShowText] = useState(true);
-  const [selectedMap, setSelectedMap] = useState<string | null>(null);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
-
+  const [selectedMap, setSelectedMap] = useState<string | null>(null);
+  const [selectedSort, setSelectedSort] = useState<string>('gold');
+  const [selectedStats, setSelectedStats] = useState<string[]>(['gold']);
+  
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
 
-  const filteredItems = items
-    ? selectedMap
-      ? Object.entries(items).filter(([_, item]) => item.maps[selectedMap])
-      : Object.entries(items)
-    : [];
-
+  const allStatKeys = useAllStatKeys(items);
+  const filteredItems = useFilteredItems(items, selectedMap, selectedStats, selectedSort);
   const selectedItem = selectedItemId && items ? items[selectedItemId] : null;
-
+  
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -86,6 +61,7 @@ export default function ItemFetcher() {
   const autoHideText = containerSize.height < 400 && containerSize.width < 800;
   const effectiveShowText = showText && !autoHideText;
   
+  
  return (
   <div className={styles.itemFetcherContainer}>
   <h2 className={styles.itemFetcherHeader}>Items (Version: {version ?? 'loading...'})</h2>
@@ -96,7 +72,13 @@ export default function ItemFetcher() {
   >
     {showText ? 'Hide Text' : 'Show Text'}
   </button>
-  
+
+  <ItemStatsFilter
+  availableStats={allStatKeys}
+  selectedStats={selectedStats}
+  onChange={setSelectedStats}
+/>
+
   {items && version ? (
     <MapFilter
       items={items}
@@ -143,13 +125,12 @@ export default function ItemFetcher() {
   </div>
 
   {selectedItem && (
-  <div className={styles.detailsRow}>
-    <div className={styles.statsColumn}>
-      <ItemStats item={selectedItem} />
+    <div className={styles.detailsRow}>
+      <div className={styles.statsColumn}>
+        <ItemStats item={selectedItem} />
+      </div>
     </div>
-  </div>
-)}
-
+  )}
 </div>
 
 </div>

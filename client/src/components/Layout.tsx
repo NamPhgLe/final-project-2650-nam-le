@@ -36,9 +36,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           color: 'var(--text-color)',
         }}
       >
-        <button onClick={() => setDarkMode((d) => !d)}>
-          Switch to {darkMode ? 'Light' : 'Dark'} Mode
-        </button>
       </header>
 
       <main style={{ padding: '1rem' }}>{children}</main>

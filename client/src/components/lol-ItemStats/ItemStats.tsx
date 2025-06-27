@@ -32,45 +32,38 @@ interface ItemData {
 
 const ItemStats: React.FC<ItemStatsProps> = ({ item }) => {
   return (
-    <div
-      className="bg-dark text-light border border-light rounded p-3"
-      style={{
-        maxHeight: '600px',
-        overflowY: 'auto',
-        minWidth: '300px',
-      }}
-    >
-      <h5 className="text-info">{item.name}</h5>
-      {item.plaintext && <p className="fst-italic">{item.plaintext}</p>}
-      <p dangerouslySetInnerHTML={{ __html: item.description }} />
+    <div>
+      <h5>{item.name}</h5>
+      {item.plaintext && <p>{item.plaintext}</p>}
+      <div dangerouslySetInnerHTML={{ __html: item.description }} />
 
-      <h6 className="mt-3">Stats:</h6>
-      <ul className="list-unstyled">
+      <h6>Stats:</h6>
+      <ul>
         {Object.entries(item.stats).map(([key, value]) => (
           <li key={key}>
-            <strong className="text-warning">{key}:</strong> {value}
+            <strong>{key}:</strong> {value}
           </li>
         ))}
       </ul>
 
       {item.effect && (
         <>
-          <h6 className="mt-3">Effects:</h6>
-          <ul className="list-unstyled">
+          <h6>Effects:</h6>
+          <ul>
             {Object.entries(item.effect).map(([key, value]) => (
               <li key={key}>
-                <strong className="text-success">{key}:</strong> {value}
+                <strong>{key}:</strong> {value}
               </li>
             ))}
           </ul>
         </>
       )}
 
-      <h6 className="mt-3">Tags:</h6>
+      <h6>Tags:</h6>
       <p>{item.tags.join(', ')}</p>
 
-      <h6 className="mt-3">Gold:</h6>
-      <ul className="list-unstyled">
+      <h6>Gold:</h6>
+      <ul>
         <li><strong>Base:</strong> {item.gold.base}</li>
         <li><strong>Total:</strong> {item.gold.total}</li>
         <li><strong>Sell:</strong> {item.gold.sell}</li>
