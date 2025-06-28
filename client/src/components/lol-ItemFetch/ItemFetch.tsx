@@ -1,13 +1,12 @@
 import { useEffect, useState, useRef } from 'react';
 import MapFilter from './lol-ItemFilters/ItemMapFilter';
-import ItemStats from '../lol-ItemStats/ItemStats';
 import styles from './Itemfetch.module.css';
 import ItemStatsFilter from './lol-ItemFilters/ItemStats/ItemStatsFilter';
 import { useFilteredItems, useAllStatKeys } from './lol-ItemFilters/FilterHooks/ItemFilter';
 import type { ItemData } from '../../types/lol-ItemTypes';
-import React from 'react';
+import ItemSearchFilter from './lol-ItemFilters/ItemSearch/ItemSearchFilter';
 import axios from 'axios';
-
+import ItemDescription from './ItemDescription/ItemDescription';
 type ItemMap = Record<string, ItemData>;
 
 export default function ItemFetcher() {
@@ -18,14 +17,16 @@ export default function ItemFetcher() {
   const [selectedMap, setSelectedMap] = useState<string | null>(null);
   const [selectedSort, setSelectedSort] = useState<string>('gold');
   const [selectedStats, setSelectedStats] = useState<string[]>(['gold']);
-  
+  const [searchTerm, setSearchTerm] = useState<string>('');
+
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
 
   const allStatKeys = useAllStatKeys(items);
-  const filteredItems = useFilteredItems(items, selectedMap, selectedStats, selectedSort);
+  const filteredItems = useFilteredItems(items, selectedMap, selectedStats, selectedSort, searchTerm);
   const selectedItem = selectedItemId && items ? items[selectedItemId] : null;
-  
+
+
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -79,6 +80,8 @@ export default function ItemFetcher() {
   onChange={setSelectedStats}
 />
 
+<ItemSearchFilter onSearch={setSearchTerm} />
+
   {items && version ? (
     <MapFilter
       items={items}
@@ -124,13 +127,17 @@ export default function ItemFetcher() {
     )}
   </div>
 
-  {selectedItem && (
-    <div className={styles.detailsRow}>
-      <div className={styles.statsColumn}>
-        <ItemStats item={selectedItem} />
-      </div>
-    </div>
-  )}
+  {selectedItem && items && version && (
+  <ItemDescription
+  item={selectedItem}
+  items={items}
+  version={version}
+  onSelectItem={setSelectedItemId}
+  img={`https://ddragon.leagueoflegends.com/cdn/${version}/img/item/${selectedItemId}.png`}
+/>
+)}
+
+
 </div>
 
 </div>

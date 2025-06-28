@@ -46,6 +46,8 @@
 }
 
 .itemsScrollContainer {
+  width: 980px;
+  height: 720px;
   min-width: 142px;
   min-height: 172px;
   max-height: 600px;
@@ -61,7 +63,7 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 1rem;
+  gap: 2rem;
 }
 
 .itemCard {

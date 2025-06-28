@@ -1,73 +1,32 @@
-import React from 'react';
+import type { ItemData } from '../../types/lol-ItemTypes';
+import styles from './ItemStats.module.css';
 
 interface ItemStatsProps {
   item: ItemData;
+  img? :string;
 }
 
-interface ItemData {
-  name: string;
-  description: string;
-  colloq: string;
-  plaintext: string;
-  into?: string[];
-  from?: string[];
-  specialRecipe?: number;
-  inStore?: boolean;
-  hideFromAll?: boolean;
-  requiredChampion?: string;
-  requiredAlly?: string;
-  stats: Record<string, number>;
-  tags: string[];
-  maps: Record<string, boolean>;
-  gold: {
-    base: number;
-    total: number;
-    sell: number;
-    purchasable: boolean;
-  };
-  effect?: Record<string, string>;
-  depth?: number;
-  stacks?: number;
-}
-
-const ItemStats: React.FC<ItemStatsProps> = ({ item }) => {
+const ItemStats: React.FC<ItemStatsProps> = ({ item, img }) => {
   return (
-    <div>
-      <h5>{item.name}</h5>
+    <div className={styles.container}>
+      <div className={styles.title}>
+      {img && (
+          <img
+            src={img}
+            alt={item.name}
+            className={styles.itemIcon}
+          />
+        )}
+        <span>{item.name}</span>
+      </div>
+
       {item.plaintext && <p>{item.plaintext}</p>}
+
       <div dangerouslySetInnerHTML={{ __html: item.description }} />
-
-      <h6>Stats:</h6>
-      <ul>
-        {Object.entries(item.stats).map(([key, value]) => (
-          <li key={key}>
-            <strong>{key}:</strong> {value}
-          </li>
-        ))}
-      </ul>
-
-      {item.effect && (
-        <>
-          <h6>Effects:</h6>
-          <ul>
-            {Object.entries(item.effect).map(([key, value]) => (
-              <li key={key}>
-                <strong>{key}:</strong> {value}
-              </li>
-            ))}
-          </ul>
-        </>
-      )}
-
-      <h6>Tags:</h6>
-      <p>{item.tags.join(', ')}</p>
-
+        <br></br>
       <h6>Gold:</h6>
       <ul>
-        <li><strong>Base:</strong> {item.gold.base}</li>
-        <li><strong>Total:</strong> {item.gold.total}</li>
         <li><strong>Sell:</strong> {item.gold.sell}</li>
-        <li><strong>Purchasable:</strong> {item.gold.purchasable ? 'Yes' : 'No'}</li>
       </ul>
     </div>
   );

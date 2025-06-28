@@ -24,11 +24,13 @@ export function useFilteredItems(
   items: ItemMap | null,
   selectedMap: string | null,
   selectedStats: string[],
-  selectedSort: string
+  selectedSort: string,
+  searchTerm: string
 ) {
   return useMemo(() => {
     if (!items) return [];
 
+    const lowerTerm = searchTerm.toLowerCase();
     const seenNames = new Set<string>();
     let entries = Object.entries(items);
 
@@ -40,6 +42,13 @@ export function useFilteredItems(
     if (filterStats.length > 0) {
       entries = entries.filter(([_, item]) =>
         filterStats.every((stat) => item.stats[stat] && item.stats[stat] !== 0)
+      );
+    }
+
+    if (searchTerm.trim()) {
+      entries = entries.filter(([_, item]) =>
+        item.name.toLowerCase().includes(lowerTerm) ||
+        Object.keys(item.stats).some(stat => stat.toLowerCase().includes(lowerTerm))
       );
     }
 
@@ -57,5 +66,5 @@ export function useFilteredItems(
     });
 
     return entries;
-  }, [items, selectedMap, selectedStats, selectedSort]);
+  }, [items, selectedMap, selectedStats, selectedSort, searchTerm]);
 }

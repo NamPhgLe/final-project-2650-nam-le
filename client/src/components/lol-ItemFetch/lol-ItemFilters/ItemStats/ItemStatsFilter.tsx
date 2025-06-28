@@ -7,6 +7,17 @@ interface ItemStatsFilterProps {
   onChange: (selected: string[]) => void;
 }
 
+// Add your friendly stat name mappings here
+const statNameMap: Record<string, string> = {
+  flatHPpoolMod: 'Health',
+  flatArmorMod: 'Armor',
+  flatMagicResistMod: 'Magic Resist',
+  flatAttackDamageMod: 'Attack Damage',
+  percentAttackSpeedMod: 'Attack Speed %',
+  flatMovementSpeedMod: 'Movement Speed',
+  // Add more mappings as needed...
+};
+
 const ItemStatsFilter: React.FC<ItemStatsFilterProps> = ({
   availableStats,
   selectedStats,
@@ -31,7 +42,8 @@ const ItemStatsFilter: React.FC<ItemStatsFilterProps> = ({
                 }
               }}
             >
-              {stat}
+              {/* Use friendly name if available */}
+              {statNameMap[stat] || stat}
             </button>
           );
         })}
