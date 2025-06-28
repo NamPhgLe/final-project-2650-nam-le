@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './ItemStatsFilter.module.css';
+import {statNameMap} from '../../../../constants/statNameMap'
 
 interface ItemStatsFilterProps {
   availableStats: string[];
@@ -7,27 +8,17 @@ interface ItemStatsFilterProps {
   onChange: (selected: string[]) => void;
 }
 
-// Add your friendly stat name mappings here
-const statNameMap: Record<string, string> = {
-  flatHPpoolMod: 'Health',
-  flatArmorMod: 'Armor',
-  flatMagicResistMod: 'Magic Resist',
-  flatAttackDamageMod: 'Attack Damage',
-  percentAttackSpeedMod: 'Attack Speed %',
-  flatMovementSpeedMod: 'Movement Speed',
-  // Add more mappings as needed...
-};
-
 const ItemStatsFilter: React.FC<ItemStatsFilterProps> = ({
   availableStats,
   selectedStats,
   onChange,
 }) => {
+  const allStats = Array.from(new Set([...availableStats, ...Object.keys(statNameMap)]));
   return (
     <div className={styles.container}>
       <h3 className={styles.heading}>Filter by Stats:</h3>
       <div className={styles.buttonsContainer}>
-        {availableStats.map(stat => {
+        {allStats.map(stat => {
           const isSelected = selectedStats.includes(stat);
           return (
             <button
@@ -42,7 +33,6 @@ const ItemStatsFilter: React.FC<ItemStatsFilterProps> = ({
                 }
               }}
             >
-              {/* Use friendly name if available */}
               {statNameMap[stat] || stat}
             </button>
           );
