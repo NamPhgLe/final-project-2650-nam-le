@@ -114,9 +114,6 @@ export default function ItemDescription({
                 {requiredComponentsWithCount.length > 0 && (
                     <div className={styles.buildsIntoSection}>
                         <h4 className={styles.sectionHeader}>Required Components:</h4>
-                        <p className={styles.componentCount}>
-                            Requires {safeFrom.length} total component{safeFrom.length > 1 ? 's' : ''}
-                        </p>
                         <div className={styles.buildsIntoGrid}>
                             {requiredComponentsWithCount.map(({ id, data, count }) => (
                                 <div
