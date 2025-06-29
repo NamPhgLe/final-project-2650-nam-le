@@ -1,12 +1,14 @@
 import { useEffect, useState, useRef } from 'react';
-import MapFilter from '../lItemFilters/ItemMapFilter';
+import MapFilter from '../ItemFilters/ItemMapFilter';
 import styles from './Itemfetch.module.css';
-import ItemStatsFilter from '../lItemFilters/ItemStats/ItemStatsFilter';
-import { useFilteredItems, useAllStatKeys } from '../lItemFilters/FilterHooks/ItemFilter';
+import ItemStatsFilter from '../ItemFilters/ItemStats/ItemStatsFilter';
+import { useFilteredItems, useAllStatKeys } from '../../../hooks/useItemFilter';
 import type { ItemData } from '../../../constants/lol-ItemTypes';
-import ItemSearchFilter from '../lItemFilters/ItemSearch/ItemSearchFilter';
+import ItemSearchFilter from '../ItemFilters/ItemSearch/ItemSearchFilter';
 import axios from 'axios';
 import ItemDescription from '../ItemDescription/ItemDescription';
+import {useInventory} from '../../../hooks/useInventory'
+import Inventory from '../../lol-Inventory/Inventory'
 type ItemMap = Record<string, ItemData>;
 
 export default function ItemFetcher() {
@@ -18,7 +20,7 @@ export default function ItemFetcher() {
   const [selectedSort, setSelectedSort] = useState<string>('gold');
   const [selectedStats, setSelectedStats] = useState<string[]>(['gold']);
   const [searchTerm, setSearchTerm] = useState<string>('');
-
+  
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
 
@@ -26,6 +28,7 @@ export default function ItemFetcher() {
   const filteredItems = useFilteredItems(items, selectedMap, selectedStats, selectedSort, searchTerm);
   const selectedItem = selectedItemId && items ? items[selectedItemId] : null;
 
+  const { inventory, ward, addItem: handleBuyItem } = useInventory();
 
   useEffect(() => {
     const loadData = async () => {
@@ -39,7 +42,15 @@ export default function ItemFetcher() {
         const itemsRes = await axios.get(
           `https://ddragon.leagueoflegends.com/cdn/${latestVersion}/data/en_US/item.json`
         );
-        setItems(itemsRes.data.data);
+
+        const rawData: Record<string, ItemData> = itemsRes.data.data;
+
+        const items: Record<string, ItemData> = {};
+        Object.entries(rawData).forEach(([id, item]) => {
+          items[id] = { ...item, id };
+        });
+
+        setItems(items);
       } catch (err) {
         console.error('Error loading data:', err);
       }
@@ -62,11 +73,12 @@ export default function ItemFetcher() {
   const autoHideText = containerSize.height < 400 && containerSize.width < 800;
   const effectiveShowText = showText && !autoHideText;
 
+  
 
   return (
     <div className={styles.itemFetcherContainer}>
       <h2 className={styles.itemFetcherHeader}>Items (Version: {version ?? 'loading...'})</h2>
-
+      
       <button
         onClick={() => setShowText((prev) => !prev)}
         className={styles.toggleButton}
@@ -134,10 +146,11 @@ export default function ItemFetcher() {
             version={version}
             onSelectItem={setSelectedItemId}
             img={`https://ddragon.leagueoflegends.com/cdn/${version}/img/item/${selectedItemId}.png`}
+            onBuyItem={handleBuyItem}
           />
         )}
 
-
+        <Inventory items={inventory} ward={ward} />
       </div>
 
     </div>
