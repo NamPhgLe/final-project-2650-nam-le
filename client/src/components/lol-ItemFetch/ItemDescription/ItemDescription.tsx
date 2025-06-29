@@ -1,8 +1,9 @@
-import React, { useMemo } from 'react';
-import ItemStats from '../../lol-ItemStats/ItemStats';
+import React, { useMemo, useState } from 'react';
+import ItemStats from '../ItemStats/ItemStats';
 import styles from './ItemDescription.module.css';
+import type { ItemData } from '../../../constants/lol-ItemTypes';
 
-import type { ItemData } from '../../../types/lol-ItemTypes';
+
 
 interface ItemDescriptionProps {
     item: ItemData;
@@ -10,6 +11,7 @@ interface ItemDescriptionProps {
     version: string;
     onSelectItem: (id: string) => void;
     img?: string;
+    onBuyItem?: (item: ItemData, img: string) => void;
 }
 
 export default function ItemDescription({
@@ -18,6 +20,7 @@ export default function ItemDescription({
     version,
     onSelectItem,
     img,
+    onBuyItem,
 }: ItemDescriptionProps) {
 
     const uniqueByName = (list: { id: string; data: ItemData }[]) => {
@@ -132,6 +135,16 @@ export default function ItemDescription({
                                 </div>
                             ))}
                         </div>
+                    </div>
+                )}
+                {img && onBuyItem && (
+                    <div className={styles.buyButtonWrapper}>
+                        <button
+                            className={styles.buyButton}
+                            onClick={() => onBuyItem(item, img)}
+                        >
+                            Buy
+                        </button>
                     </div>
                 )}
             </div>
