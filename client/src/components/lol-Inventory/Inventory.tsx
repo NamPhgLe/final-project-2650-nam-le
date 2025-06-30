@@ -1,51 +1,79 @@
+import { useState } from 'react';
 import styles from './inventory.module.css';
 import type { ItemData } from '../../constants/lol-ItemTypes';
 
 interface TrinketProps {
     items: ({ item: ItemData; img: string } | null)[];
     trinket?: { item: ItemData; img: string } | null;
+    slotCount: number;
+    onRemoveItem: (index: number) => void;
+    onRemoveTrinket: () => void;
+    onIncreaseSlots: () => void;
+    onDecreaseSlots: () => void;
 }
 
 export default function Trinket({
     items,
     trinket,
+    slotCount,
+    onRemoveItem,
+    onRemoveTrinket,
+    onIncreaseSlots,
+    onDecreaseSlots,
 }: TrinketProps) {
 
-    const filledItems = [...items];
-    while (filledItems.length < 6) {
+    let filledItems = items.slice(0, slotCount);
+    while (filledItems.length < slotCount) {
         filledItems.push(null);
+    }
+
+    const slotsPerRow = 5;
+    const rows = [];
+    for (let i = 0; i < slotCount; i += slotsPerRow) {
+        rows.push(filledItems.slice(i, i + slotsPerRow));
     }
 
     return (
         <div className={styles.inventoryContainer}>
+            <div className={styles.slotControls}>
+                <button onClick={onDecreaseSlots} disabled={slotCount <= 6}>-</button>
+                <span>{slotCount} slots</span>
+                <button onClick={onIncreaseSlots} disabled={slotCount >= 20}>+</button>
+
+            </div>
+
             <table className={styles.table}>
                 <tbody>
+                    {rows.map((rowItems, rowIndex) => (
+                        <tr key={`row-${rowIndex}`}>
+                            {rowItems.map((entry, idx) => {
+                                const index = rowIndex * slotsPerRow + idx;
+                                return (
+                                    <td
+                                        key={`slot-${index}`}
+                                        className={styles.slot}
+                                        onDoubleClick={() => {
+                                            if (entry) onRemoveItem(index);
+                                        }}
+                                    >
+                                        {entry ? (
+                                            <img src={entry.img} alt={entry.item.name} />
+                                        ) : (
+                                            <div className={styles.emptySlot} />
+                                        )}
+                                    </td>
+                                );
+                            })}
+                        </tr>
+                    ))}
                     <tr>
-                        {filledItems.slice(0, 3).map((entry, idx) => (
-                            <td key={`slot-top-${idx}`} className={styles.slot}>
-                                {entry ? (
-                                    <img src={entry.img} alt={entry.item.name} />
-                                ) : (
-                                    <div className={styles.emptySlot} />
-                                )}
-                            </td>
-                        ))}
-                    </tr>
-                    <tr>
-                        {filledItems.slice(3, 6).map((entry, idx) => (
-                            <td key={`slot-bottom-${idx}`} className={styles.slot}>
-                                {entry ? (
-                                    <img src={entry.img} alt={entry.item.name} />
-                                ) : (
-                                    <div className={styles.emptySlot} />
-                                )}
-                            </td>
-                        ))}
-                    </tr>
-                    <tr>
-                        <td colSpan={3} className={styles.trinketSlot}>
+                        <td colSpan={slotsPerRow} className={styles.trinketSlot}>
                             <strong>Trinket Slot:</strong>
-                            <div>
+                            <div
+                                onDoubleClick={() => {
+                                    if (trinket) onRemoveTrinket();
+                                }}
+                            >
                                 {trinket ? (
                                     <img src={trinket.img} alt={trinket.item.name} />
                                 ) : (

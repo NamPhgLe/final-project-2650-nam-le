@@ -29,7 +29,7 @@ export default function ItemFetcher() {
   const filteredItems = useFilteredItems(items, selectedMap, selectedStats, selectedSort, searchTerm);
   const selectedItem = selectedItemId && items ? items[selectedItemId] : null;
 
-  const { inventory, trinket, addItem: handleBuyItem } = useInventory();
+  const { inventory, trinket, slotCount, addItem: handleBuyItem, removeItem, removeTrinket, increaseSlots, decreaseSlots } = useInventory();
 
   useEffect(() => {
     const loadData = async () => {
@@ -113,6 +113,9 @@ export default function ItemFetcher() {
                 <div
                   key={id}
                   onClick={() => setSelectedItemId(id)}
+                  onDoubleClick={() =>
+                    handleBuyItem(item as ItemData, `https://ddragon.leagueoflegends.com/cdn/${version}/img/item/${id}.png`)
+                  }
                   className={`${styles.itemCard} ${selectedItemId === id ? styles.selected : ''} ${!showText ? styles.compact : ''}`}
                   style={{ minHeight: showText ? 150 : 90 }}
                 >
@@ -148,7 +151,15 @@ export default function ItemFetcher() {
           />
         )}
 
-        <Inventory items={inventory} trinket={trinket} />
+        <Inventory 
+          items={inventory} 
+          trinket={trinket} 
+          slotCount = {slotCount}
+          onRemoveItem={removeItem}
+          onRemoveTrinket={removeTrinket}
+          onIncreaseSlots={increaseSlots}
+          onDecreaseSlots={decreaseSlots}
+          />
       </div>
     </div>
   );
