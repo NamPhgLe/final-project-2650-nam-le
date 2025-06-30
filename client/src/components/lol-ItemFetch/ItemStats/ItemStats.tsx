@@ -20,9 +20,8 @@ const ItemStats: React.FC<ItemStatsProps> = ({ item, img }) => {
         <span>{item.name}</span>
         
       </div>
-      <p>Id: {item.id}</p>
+      <p>Id: {item.id}</p>  
       {item.plaintext && <p>{item.plaintext}</p>}
-
       <div dangerouslySetInnerHTML={{ __html: item.description }} />
         <br></br>
       <h6>Gold:</h6>

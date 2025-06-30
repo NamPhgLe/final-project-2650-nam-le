@@ -22,6 +22,7 @@ export function useAllStatKeys(items: ItemMap | null) {
   }, [items]);
 }
 
+
 export function useFilteredItems(
   items: ItemMap | null,
   selectedMap: string | null,
@@ -37,7 +38,10 @@ export function useFilteredItems(
     let entries = Object.entries(items);
 
     if (selectedMap) {
-      entries = entries.filter(([_, item]) => item.maps[selectedMap]);
+      entries = entries.filter(([id, item]) => {
+        if (TRINKET_IDS.includes(id)) return true;
+        return item.maps[selectedMap] === true;
+      });
     }
 
     const filterStats = selectedStats.filter((s) => s !== 'gold');
@@ -54,19 +58,12 @@ export function useFilteredItems(
       );
     }
 
-   
-entries = entries.filter(([id, item]) => {
-  // Always include trinkets regardless of map/stats filters
-  if (TRINKET_IDS.includes(id)) return true;
+    entries = entries.filter(([_, item]) => {
+      if (seenNames.has(item.name)) return false;
+      seenNames.add(item.name);
+      return true;
+    });
 
-  if (selectedMap && !item.maps[selectedMap]) return false;
-
-  if (filterStats.length > 0 && !filterStats.every((stat) => item.stats[stat] && item.stats[stat] !== 0)) {
-    return false;
-  }
-
-  return true;
-});
     entries.sort(([_, a], [__, b]) => {
       if (selectedSort === 'gold') {
         return a.gold.total - b.gold.total;

@@ -8,8 +8,8 @@ import ItemSearchFilter from '../ItemFilters/ItemSearch/ItemSearchFilter';
 import axios from 'axios';
 import ItemDescription from '../ItemDescription/ItemDescription';
 import { useInventory } from '../../../hooks/useInventory';
-import Inventory from '../../lol-Inventory/Inventory';
-
+import Inventory from '../../lol-Inventory/InventroyDisplay/Inventory';
+import InventoryStats from '../../lol-Inventory/InventoryStats/InventoryStats'
 type ItemMap = Record<string, ItemData>;
 
 export default function ItemFetcher() {
@@ -154,12 +154,14 @@ export default function ItemFetcher() {
         <Inventory 
           items={inventory} 
           trinket={trinket} 
-          slotCount = {slotCount}
+          slotCount={slotCount}
           onRemoveItem={removeItem}
           onRemoveTrinket={removeTrinket}
           onIncreaseSlots={increaseSlots}
           onDecreaseSlots={decreaseSlots}
           />
+
+          <InventoryStats items={inventory} trinket={trinket}></InventoryStats>
       </div>
     </div>
   );

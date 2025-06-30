@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import styles from './inventory.module.css';
-import type { ItemData } from '../../constants/lol-ItemTypes';
+import styles from './Inventory.module.css';
+import type { ItemData } from '../../../constants/lol-ItemTypes';
 
 interface TrinketProps {
     items: ({ item: ItemData; img: string } | null)[];
