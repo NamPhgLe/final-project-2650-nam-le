@@ -1,14 +1,17 @@
 import { useState } from 'react';
 import type { ItemData } from '../constants/lol-ItemTypes';
 
+const TRINKET_IDS = ['3340', '3363', '3364'];
+
 export function useInventory() {
   const [inventory, setInventory] = useState<{ item: ItemData; img: string }[]>([]);
-  const [ward, setWard] = useState<{ item: ItemData; img: string } | null>(null);
+  const [trinket, setTrinket] = useState<{ item: ItemData; img: string } | null>(null);
 
   const addItem = (item: ItemData, img: string) => {
-    const isWard = item.name.toLowerCase().includes("ward");
-    if (isWard) {
-      setWard({ item, img });
+    const isTrinket = TRINKET_IDS.includes(item.id);
+
+    if (isTrinket) {
+      setTrinket({ item, img });
     } else if (inventory.length < 6) {
       setInventory((prev) => [...prev, { item, img }]);
     } else {
@@ -22,12 +25,12 @@ export function useInventory() {
 
   const clearInventory = () => {
     setInventory([]);
-    setWard(null);
+    setTrinket(null);
   };
 
   return {
     inventory,
-    ward,
+    trinket,
     addItem,
     removeItem,
     clearInventory,

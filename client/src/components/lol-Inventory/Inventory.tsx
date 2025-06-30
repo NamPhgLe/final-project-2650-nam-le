@@ -1,15 +1,15 @@
-import styles from './inventory.module.css'
+import styles from './inventory.module.css';
 import type { ItemData } from '../../constants/lol-ItemTypes';
 
-interface InventoryProps {
+interface TrinketProps {
     items: ({ item: ItemData; img: string } | null)[];
-    ward?: { item: ItemData; img: string } | null;
+    trinket?: { item: ItemData; img: string } | null;
 }
 
-export default function Iventory({
+export default function Trinket({
     items,
-    ward,
-} : InventoryProps) {
+    trinket,
+}: TrinketProps) {
 
     const filledItems = [...items];
     while (filledItems.length < 6) {
@@ -43,13 +43,13 @@ export default function Iventory({
                         ))}
                     </tr>
                     <tr>
-                        <td colSpan={3} className={styles.wardSlot}>
-                            <strong>Ward Slot:</strong>
+                        <td colSpan={3} className={styles.trinketSlot}>
+                            <strong>Trinket Slot:</strong>
                             <div>
-                                {ward ? (
-                                    <img src={ward.img} alt={ward.item.name} />
+                                {trinket ? (
+                                    <img src={trinket.img} alt={trinket.item.name} />
                                 ) : (
-                                    <div className={styles.emptyWardSlot} />
+                                    <div className={styles.emptyTrinketSlot} />
                                 )}
                             </div>
                         </td>

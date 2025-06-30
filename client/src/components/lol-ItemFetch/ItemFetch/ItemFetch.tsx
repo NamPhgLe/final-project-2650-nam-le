@@ -7,8 +7,9 @@ import type { ItemData } from '../../../constants/lol-ItemTypes';
 import ItemSearchFilter from '../ItemFilters/ItemSearch/ItemSearchFilter';
 import axios from 'axios';
 import ItemDescription from '../ItemDescription/ItemDescription';
-import {useInventory} from '../../../hooks/useInventory'
-import Inventory from '../../lol-Inventory/Inventory'
+import { useInventory } from '../../../hooks/useInventory';
+import Inventory from '../../lol-Inventory/Inventory';
+
 type ItemMap = Record<string, ItemData>;
 
 export default function ItemFetcher() {
@@ -28,7 +29,7 @@ export default function ItemFetcher() {
   const filteredItems = useFilteredItems(items, selectedMap, selectedStats, selectedSort, searchTerm);
   const selectedItem = selectedItemId && items ? items[selectedItemId] : null;
 
-  const { inventory, ward, addItem: handleBuyItem } = useInventory();
+  const { inventory, trinket, addItem: handleBuyItem } = useInventory();
 
   useEffect(() => {
     const loadData = async () => {
@@ -73,8 +74,6 @@ export default function ItemFetcher() {
   const autoHideText = containerSize.height < 400 && containerSize.width < 800;
   const effectiveShowText = showText && !autoHideText;
 
-  
-
   return (
     <div className={styles.itemFetcherContainer}>
       <h2 className={styles.itemFetcherHeader}>Items (Version: {version ?? 'loading...'})</h2>
@@ -105,7 +104,6 @@ export default function ItemFetcher() {
       ) : (
         <p className="loading-text">Loading items...</p>
       )}
-
 
       <div className={styles.mainContent}>
         <div className={styles.itemsScrollContainer} ref={containerRef}>
@@ -150,9 +148,8 @@ export default function ItemFetcher() {
           />
         )}
 
-        <Inventory items={inventory} ward={ward} />
+        <Inventory items={inventory} trinket={trinket} />
       </div>
-
     </div>
   );
 }

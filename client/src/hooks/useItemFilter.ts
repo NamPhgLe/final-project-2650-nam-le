@@ -1,5 +1,7 @@
 import { useMemo } from 'react';
 
+const TRINKET_IDS = ['3340', '3363', '3364'];
+
 interface ItemData {
   name: string;
   stats: Record<string, number>;
@@ -52,12 +54,19 @@ export function useFilteredItems(
       );
     }
 
-    entries = entries.filter(([_, item]) => {
-      if (seenNames.has(item.name)) return false;
-      seenNames.add(item.name);
-      return true;
-    });
+   
+entries = entries.filter(([id, item]) => {
+  // Always include trinkets regardless of map/stats filters
+  if (TRINKET_IDS.includes(id)) return true;
 
+  if (selectedMap && !item.maps[selectedMap]) return false;
+
+  if (filterStats.length > 0 && !filterStats.every((stat) => item.stats[stat] && item.stats[stat] !== 0)) {
+    return false;
+  }
+
+  return true;
+});
     entries.sort(([_, a], [__, b]) => {
       if (selectedSort === 'gold') {
         return a.gold.total - b.gold.total;
