@@ -15,6 +15,25 @@ interface CombinedStatsProps {
 function getStatName(statKey: string): string {
   return statNameMap[statKey] || statKey;
 }
+const renameMap: Record<string, string> = {
+    hp: 'health',
+    mp: 'mana',
+    hpregen: 'healthRegen',      
+    mpregen: 'manaRegen',     
+    armor: 'armor',
+    spellblock: 'magicResist',
+    attackdamage: 'attackDamage',
+    attackspeed: 'attackSpeed',
+    movespeed: 'moveSpeed',     
+    crit: 'critChance',         
+  }
+  
+
+  function renameStatKey(key: string): string {
+    return renameMap[key] || key;
+  }
+
+  
 
 export default function CombinedStats({ items, trinket }: CombinedStatsProps) {
   const [championList, setChampionList] = useState<Record<string, string>>({});
@@ -97,12 +116,15 @@ export default function CombinedStats({ items, trinket }: CombinedStatsProps) {
     baseStats.mpregen = calculateLevelStat(s.mpregen, s.mpregenperlevel, selectedLevel);
     baseStats.crit = calculateLevelStat(s.crit, s.critperlevel, selectedLevel);
   }
-
-  const combinedStats: Record<string, number> = { ...baseStats };
-  for (const [key, val] of Object.entries(combinedItemStats)) {
-    combinedStats[key] = (combinedStats[key] || 0) + val;
+  const baseStatsRenamed: Record<string, number> = {};
+  for (const [key, value] of Object.entries(baseStats)) {
+    baseStatsRenamed[renameStatKey(key)] = value;
   }
-
+  const combinedStats: Record<string, number> = { ...baseStatsRenamed };
+  for (const [key, val] of Object.entries(combinedItemStats)) {
+    const renamedKey = renameStatKey(key);
+    combinedStats[renamedKey] = (combinedStats[renamedKey] || 0) + val;
+  }
   return (
     <div>
       <h2>Champion and Inventory Combined Stats</h2>
