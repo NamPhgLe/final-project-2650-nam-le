@@ -1,4 +1,4 @@
-import type { ItemData } from '../../../constants/ItemData';
+import type { ItemData } from '../../../constants/itemData';
 import styles from './ItemStats.module.css';
 
 interface ItemStatsProps {

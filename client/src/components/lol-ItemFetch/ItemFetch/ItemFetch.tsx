@@ -3,7 +3,7 @@ import MapFilter from '../ItemFilters/ItemMapFilter';
 import styles from './Itemfetch.module.css';
 import ItemStatsFilter from '../ItemFilters/ItemStats/ItemStatsFilter';
 import { useFilteredItems, useAllStatKeys } from '../../../hooks/useItemFilter';
-import type { ItemData } from '../../../constants/ItemData';
+import type { ItemData } from '../../../constants/itemData';
 import ItemSearchFilter from '../ItemFilters/ItemSearch/ItemSearchFilter';
 import axios from 'axios';
 import ItemDescription from '../ItemDescription/ItemDescription';

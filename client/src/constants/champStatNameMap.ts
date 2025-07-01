@@ -1,0 +1,33 @@
+export const statNameMap = new Map<string, string>([
+    ['hp', 'Health'],
+    ['hpperlevel', 'Health per Level'],
+    ['mp', 'Mana'],
+    ['mpperlevel', 'Mana per Level'],
+    ['movespeed', 'Move Speed'],
+    ['armor', 'Armor'],
+    ['armorperlevel', 'Armor per Level'],
+    ['spellblock', 'Magic Resist'],
+    ['spellblockperlevel', 'Magic Resist per Level'],
+    ['attackrange', 'Attack Range'],
+    ['hpregen', 'Health Regen'],
+    ['hpregenperlevel', 'Health Regen per Level'],
+    ['mpregen', 'Mana Regen'],
+    ['mpregenperlevel', 'Mana Regen per Level'],
+    ['crit', 'Crit Chance'],
+    ['critperlevel', 'Crit Chance per Level'],
+    ['attackdamage', 'Attack Damage'],
+    ['attackdamageperlevel', 'Attack Damage per Level'],
+    ['attackspeedperlevel', 'Attack Speed per Level'],
+    ['attackspeed', 'Attack Speed'],
+  
+    // Item-specific stats (optional)
+    ['abilitypower', 'Ability Power'],
+    ['lethality', 'Lethality'],
+    ['armorpenetration', 'Armor Penetration'],
+    ['magicpenetration', 'Magic Penetration'],
+    ['omnivamp', 'Omnivamp'],
+    ['lifesteal', 'Life Steal'],
+    ['cooldownreduction', 'Cooldown Reduction'],
+    ['healandshieldpower', 'Heal & Shield Power'],
+  ]);
+  

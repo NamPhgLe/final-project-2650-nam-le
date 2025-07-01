@@ -1,5 +1,5 @@
 import React from 'react';
-import type { ItemData } from '../../../constants/ItemData';
+import type { ItemData } from '../../../constants/itemData';
 import { statNameMap } from '../../../constants/statNameMap';
 import { parseItemDescription } from '../../../utils/parseItemDescription'; 
 

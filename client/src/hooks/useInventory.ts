@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { ItemData } from '../constants/ItemData';
+import type { ItemData } from '../constants/itemData';
 
 const TRINKET_IDS = ['3340', '3363', '3364'];
 const MIN_SLOTS = 6;

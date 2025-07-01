@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styles from './Inventory.module.css';
-import type { ItemData } from '../../../constants/ItemData';
+import type { ItemData } from '../../../constants/itemData';
 
 interface TrinketProps {
     items: ({ item: ItemData; img: string } | null)[];
