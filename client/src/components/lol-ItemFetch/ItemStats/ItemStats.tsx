@@ -1,4 +1,4 @@
-import type { ItemData } from '../../../constants/lol-ItemTypes';
+import type { ItemData } from '../../../constants/ItemData';
 import styles from './ItemStats.module.css';
 
 interface ItemStatsProps {
@@ -22,6 +22,7 @@ const ItemStats: React.FC<ItemStatsProps> = ({ item, img }) => {
       </div>
       <p>Id: {item.id}</p>  
       {item.plaintext && <p>{item.plaintext}</p>}
+
       <div dangerouslySetInnerHTML={{ __html: item.description }} />
         <br></br>
       <h6>Gold:</h6>

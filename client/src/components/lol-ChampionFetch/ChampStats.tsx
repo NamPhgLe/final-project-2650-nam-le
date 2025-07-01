@@ -41,7 +41,6 @@ export default function ChampionStats() {
         const res = await axios.get(
           'https://ddragon.leagueoflegends.com/cdn/13.24.1/data/en_US/champion/Aatrox.json'
         );
-        // The data structure: res.data.data['Aatrox']
         setChampion(res.data.data.Aatrox);
       } catch (err) {
         console.error('Error fetching champion detail:', err);

@@ -11,6 +11,7 @@ export const statNameMap: Record<string, string> = {
   lifeSteal: 'Life Steal %',
   healthRegen: 'Health Regeneration',
   movementSpeedPercent: 'Movement Speed %',  
+  abilityHaste : 'Ability Haste',
 
   block: 'Block',
   critChancePercent: 'Critical Strike Chance %',

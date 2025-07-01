@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { ItemData } from '../constants/lol-ItemTypes';
+import type { ItemData } from '../constants/ItemData';
 
 const TRINKET_IDS = ['3340', '3363', '3364'];
 const MIN_SLOTS = 6;

@@ -1,5 +1,5 @@
 import React from 'react';
-import type { ItemData } from '../../../constants/lol-ItemTypes';
+import type { ItemData } from '../../../constants/ItemData';
 import { statNameMap } from '../../../constants/statNameMap';
 import { parseItemDescription } from '../../../utils/parseItemDescription'; 
 
