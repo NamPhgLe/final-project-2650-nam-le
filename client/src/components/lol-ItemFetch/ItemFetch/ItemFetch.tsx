@@ -3,13 +3,14 @@ import MapFilter from '../ItemFilters/ItemMapFilter';
 import styles from './Itemfetch.module.css';
 import ItemStatsFilter from '../ItemFilters/ItemStats/ItemStatsFilter';
 import { useFilteredItems, useAllStatKeys } from '../../../hooks/useItemFilter';
-import type { ItemData } from '../../../constants/itemData';
+import type { ItemData } from '../../../constants/ItemData';
 import ItemSearchFilter from '../ItemFilters/ItemSearch/ItemSearchFilter';
 import axios from 'axios';
 import ItemDescription from '../ItemDescription/ItemDescription';
 import { useInventory } from '../../../hooks/useInventory';
 import Inventory from '../../lol-Inventory/InventroyDisplay/Inventory';
 import InventoryStats from '../../lol-Inventory/InventoryStats/InventoryStats'
+import CombinedStats from '../../lol-ChampFetch/CombineStats'
 type ItemMap = Record<string, ItemData>;
 
 export default function ItemFetcher() {
@@ -162,6 +163,8 @@ export default function ItemFetcher() {
           />
 
           <InventoryStats items={inventory} trinket={trinket}></InventoryStats>
+
+          <CombinedStats items={inventory} trinket={trinket} />
       </div>
     </div>
   );
