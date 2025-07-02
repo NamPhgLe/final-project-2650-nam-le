@@ -13,8 +13,9 @@ interface CombinedStatsProps {
 }
 
 function getStatName(statKey: string): string {
-  return statNameMap[statKey] || statKey;
+  return statNameMap[statKey] || statKey.replace(/([A-Z])/g, ' $1').replace(/^./, (s) => s.toUpperCase());
 }
+
 const renameMap: Record<string, string> = {
     hp: 'health',
     mp: 'mana',
@@ -33,8 +34,6 @@ const renameMap: Record<string, string> = {
     return renameMap[key] || key;
   }
 
-  
-
 export default function CombinedStats({ items, trinket }: CombinedStatsProps) {
   const [championList, setChampionList] = useState<Record<string, string>>({});
   const [selectedChamp, setSelectedChamp] = useState('Aatrox');
@@ -44,26 +43,29 @@ export default function CombinedStats({ items, trinket }: CombinedStatsProps) {
 
   const combinedItemStats = React.useMemo(() => {
     const totalStats: Record<string, number> = {};
-
+  
     if (items) {
       for (const { item } of items) {
         if (!item.description) continue;
         const stats = parseItemDescription(item.description);
         for (const [key, value] of Object.entries(stats)) {
-          totalStats[key] = (totalStats[key] || 0) + value;
+          const renamedKey = renameStatKey(key); 
+          totalStats[renamedKey] = (totalStats[renamedKey] || 0) + value;
         }
       }
     }
-
+  
     if (trinket?.item?.description) {
       const trinketStats = parseItemDescription(trinket.item.description);
       for (const [key, value] of Object.entries(trinketStats)) {
-        totalStats[key] = (totalStats[key] || 0) + value;
+        const renamedKey = renameStatKey(key); 
+        totalStats[renamedKey] = (totalStats[renamedKey] || 0) + value;
       }
     }
-
+  
     return totalStats;
   }, [items, trinket]);
+  
 
   useEffect(() => {
     async function fetchChampionList() {
@@ -125,6 +127,8 @@ export default function CombinedStats({ items, trinket }: CombinedStatsProps) {
     const renamedKey = renameStatKey(key);
     combinedStats[renamedKey] = (combinedStats[renamedKey] || 0) + val;
   }
+
+  
   return (
     <div>
       <h2>Champion and Inventory Combined Stats</h2>

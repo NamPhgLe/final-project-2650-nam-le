@@ -333,7 +333,7 @@ export const regexStatMap: Record<string, { regex: RegExp; key: string }> = {
     key: 'manaRegen',
   },
   moveSpeed: {
-    regex: /(\d+\.?\d*)\s*(Movement Speed|Move Speed|movespeed)/i,
+    regex: /(\d+\.?\d*)\s*(Movement Speed|Move Speed|movespeed|moveSpeed)/i,
     key: 'moveSpeed',
   },
   physicalDamage: {
