@@ -6,10 +6,12 @@ import { statNameMap } from '../../constants/statNameMap';
 import { parseItemDescription } from '../../utils/parseItemDescription';
 import { calculateLevelStat, calculateAttackSpeed } from '../../utils/champUtils';
 import type { ChampionDetail } from '../../constants/champData';
+import ChampionAbilities from './ChampAbilites';
 
 interface CombinedStatsProps {
   items?: { item: ItemData; img: string }[];
   trinket?: { item: ItemData; img: string } | null;
+  version?: string | null;
 }
 
 function getStatName(statKey: string): string {
@@ -34,7 +36,7 @@ const renameMap: Record<string, string> = {
     return renameMap[key] || key;
   }
 
-export default function CombinedStats({ items, trinket }: CombinedStatsProps) {
+export default function CombinedStats({ items, trinket, version }: CombinedStatsProps) {
   const [championList, setChampionList] = useState<Record<string, string>>({});
   const [selectedChamp, setSelectedChamp] = useState('Aatrox');
   const [selectedLevel, setSelectedLevel] = useState(1);
@@ -167,6 +169,13 @@ export default function CombinedStats({ items, trinket }: CombinedStatsProps) {
           </ul>
         </>
       )}
+
+      {championData && version && (
+        <ChampionAbilities championData={championData} version={version} />
+      )}
+
+
+
     </div>
   );
 }

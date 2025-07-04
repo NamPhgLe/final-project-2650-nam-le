@@ -164,7 +164,7 @@ export default function ItemFetcher() {
 
           <InventoryStats items={inventory} trinket={trinket}></InventoryStats>
 
-          <CombinedStats items={inventory} trinket={trinket} />
+          <CombinedStats items={inventory} trinket={trinket} version={version} />
       </div>
     </div>
   );
