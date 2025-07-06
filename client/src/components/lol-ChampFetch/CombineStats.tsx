@@ -7,7 +7,8 @@ import { parseItemDescription } from '../../utils/parseItemDescription';
 import { calculateLevelStat, calculateAttackSpeed } from '../../utils/champUtils';
 import type { ChampionDetail } from '../../constants/champData';
 import ChampionAbilities from './ChampAbilites';
-
+// import {KitingGame} from '../Game/KitingGame';
+import {KitingGame} from '../KitingGame/GameLoop/KitingGame'
 interface CombinedStatsProps {
   items?: { item: ItemData; img: string }[];
   trinket?: { item: ItemData; img: string } | null;
@@ -174,8 +175,7 @@ export default function CombinedStats({ items, trinket, version }: CombinedStats
         <ChampionAbilities championData={championData} version={version} />
       )}
 
-
-
+      <KitingGame />
     </div>
   );
 }
