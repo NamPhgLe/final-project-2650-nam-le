@@ -54,7 +54,7 @@ export function useEnemy() {
     ]);
   };
 
-  const updateEnemies = (delta: number, playerPos: Position, canvasWidth: number) => {
+  const updateEnemies = (delta: number, canvasWidth: number) => {
     setEnemies(prev =>
       prev.map(enemy => {
         if (!enemy.alive) return enemy;
@@ -63,16 +63,14 @@ export function useEnemy() {
           const newX = enemy.position.x + (enemy.speed ?? 0);
           const outOfBounds = newX > canvasWidth;
 
-          const collidedWithPlayer =
-            Math.hypot(newX - playerPos.x, enemy.position.y - playerPos.y) < enemy.size / 2 + 12;
-
-          if (outOfBounds || collidedWithPlayer) {
+          if (outOfBounds) {
             return { ...enemy, alive: false };
           }
 
           return {
             ...enemy,
             position: { ...enemy.position, x: newX },
+            slowTimer: Math.max(0, (enemy.slowTimer ?? 0) - delta),
           };
         }
 
@@ -89,11 +87,16 @@ export function useEnemy() {
     );
   };
 
+  const killEnemy = (id: number) => {
+    setEnemies(prev => prev.map(e => (e.id === id ? { ...e, alive: false } : e)));
+  };
+
   return {
     enemies,
     spawnBoss,
     spawnMushroom,
     updateEnemies,
     damage,
+    killEnemy,
   };
 }

@@ -7,17 +7,11 @@ export function distance(a: Position, b: Position): number {
   return Math.hypot(a.x - b.x, a.y - b.y);
 }
 
-export function isCollidingWithObstacle(
-  pos: Position,
-  obstacles: { position: Position; width: number; height: number }[],
-  buffer = 0
-): boolean {
-  return obstacles.some(({ position, width, height }) => {
-    return (
-      pos.x + buffer > position.x &&
-      pos.x - buffer < position.x + width &&
-      pos.y + buffer > position.y &&
-      pos.y - buffer < position.y + height
-    );
-  });
+
+export function isCircleColliding(a: Position, aRadius: number, b: Position, bRadius: number) {
+  const dx = a.x - b.x;
+  const dy = a.y - b.y;
+  const distSq = dx * dx + dy * dy;
+  const radiusSum = aRadius + bRadius;
+  return distSq <= radiusSum * radiusSum;
 }

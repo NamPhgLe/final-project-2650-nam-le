@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
 import { GameCanvas } from './GameCanvas';
 import type { Position } from '../Types/Position';
+import type { ItemData } from '../../../constants/itemData';
+interface KitingGameProps {
+  stats: Record<string, number>;
+  itemStats: Record<string, number>;
+  items: { item: ItemData; img: string }[];
+  trinket?: { item: ItemData; img: string } | null;
+}
 
-export function KitingGame() {
+export function KitingGame({stats, itemStats, items, trinket}: KitingGameProps) {
   const gameWidth = 600;
   const gameHeight = 400;
 
@@ -49,6 +56,9 @@ export function KitingGame() {
           cursorPos={cursorPos}
           onRightClick={handleRightClick}
           onStopMove={handleStopMove}
+          stats={stats}
+          items={items}
+          trinket={trinket}
         />
       </div>
     </div>

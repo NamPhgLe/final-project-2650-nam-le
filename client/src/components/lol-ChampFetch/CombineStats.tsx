@@ -175,7 +175,11 @@ export default function CombinedStats({ items, trinket, version }: CombinedStats
         <ChampionAbilities championData={championData} version={version} />
       )}
 
-      <KitingGame />
+      {combinedStats && Object.keys(combinedStats).length > 0 ? (
+        <KitingGame stats={combinedStats} itemStats={combinedItemStats} items={items || []} trinket={trinket}/>
+      ) : (
+        <p>Loading stats...</p>
+      )}
     </div>
   );
 }

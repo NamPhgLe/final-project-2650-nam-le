@@ -15,7 +15,8 @@ export function drawPlayerSprite(
   position: Position,
   size: number,
   attackRange: number,
-  now: number
+  now: number,
+  stats: { health: number; mana: number; maxHealth: number; maxMana: number }
 ) {
   if (now - lastFrameTime > frameDuration) {
     frameIndex = (frameIndex + 1) % totalFrames;
@@ -50,4 +51,31 @@ export function drawPlayerSprite(
   ctx.beginPath();
   ctx.arc(position.x, position.y, attackRange, 0, Math.PI * 2);
   ctx.stroke();
+
+  const healthBarWidth = size;
+  const healthBarHeight = 8;
+  const healthBarX = position.x - healthBarWidth / 2;
+  const healthBarY = position.y - size / 2 - 20;
+
+  ctx.fillStyle = 'black';
+  ctx.fillRect(healthBarX, healthBarY, healthBarWidth, healthBarHeight);
+
+  const healthPercent = Math.max(0, stats.health / stats.maxHealth);
+  ctx.fillStyle = 'limegreen';
+  ctx.fillRect(healthBarX, healthBarY, healthBarWidth * healthPercent, healthBarHeight);
+
+  const manaBarY = healthBarY + healthBarHeight + 4;
+  ctx.fillStyle = 'black';
+  ctx.fillRect(healthBarX, manaBarY, healthBarWidth, healthBarHeight);
+
+  const manaPercent = Math.max(0, stats.mana / stats.maxMana);
+  ctx.fillStyle = 'deepskyblue';
+  ctx.fillRect(healthBarX, manaBarY, healthBarWidth * manaPercent, healthBarHeight);
+
+  ctx.fillStyle = 'white';
+  ctx.font = '12px Arial';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(`${stats.health} / ${stats.maxHealth}`, position.x, healthBarY + healthBarHeight / 2);
+  ctx.fillText(`${stats.mana} / ${stats.maxMana}`, position.x, manaBarY + healthBarHeight / 2);
 }

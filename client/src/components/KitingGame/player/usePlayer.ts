@@ -1,42 +1,48 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import type { Position } from '../Types/Position';
 
-interface PlayerState {
+export interface PlayerState {
   position: Position;
   moveTarget: Position | null;
   attackTarget: 'enemy' | null;
-  speed: number;
-
+  isSlowed: boolean;
+  stats: Record<string, number>;
 }
 
-export function usePlayer(initialPos: Position) {
+export function usePlayer(initialPos: Position, incomingStats: Record<string, number>) {
   const [player, setPlayer] = useState<PlayerState>({
     position: initialPos,
     moveTarget: null,
     attackTarget: null,
-    speed: 150,
+    isSlowed: false,
+    stats: incomingStats,
   });
-
+  useEffect(() => {
+    setPlayer(p => ({
+      ...p,
+      stats: incomingStats,
+    }));
+  }, [incomingStats]);
+  
+  
   const moveToward = useCallback((target: Position, deltaTimeMs: number) => {
     setPlayer(p => {
       const dx = target.x - p.position.x;
       const dy = target.y - p.position.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < 1) {
-        return { ...p, position: target, moveTarget: null };
-      }
+      if (dist < 1) return { ...p, position: target, moveTarget: null };
 
-      const moveDistance = p.speed * (deltaTimeMs / 1000);
-      if (moveDistance >= dist) {
-        return { ...p, position: target, moveTarget: null };
-      }
-
-      const moveX = (dx / dist) * moveDistance;
-      const moveY = (dy / dist) * moveDistance;
+      const baseSpeed = p.stats.moveSpeed || 150;
+      const actualSpeed = p.isSlowed ? baseSpeed * 0.5 : baseSpeed;
+      const moveDistance = actualSpeed * (deltaTimeMs / 1000);
+      if (moveDistance >= dist) return { ...p, position: target, moveTarget: null };
 
       return {
         ...p,
-        position: { x: p.position.x + moveX, y: p.position.y + moveY },
+        position: {
+          x: p.position.x + (dx / dist) * moveDistance,
+          y: p.position.y + (dy / dist) * moveDistance,
+        },
         moveTarget: target,
       };
     });
@@ -51,9 +57,9 @@ export function usePlayer(initialPos: Position) {
   }, []);
 
   const applySlow = useCallback((durationMs: number) => {
-    setPlayer(p => ({ ...p, speed: p.speed * 0.5 }));
+    setPlayer(p => ({ ...p, isSlowed: true }));
     setTimeout(() => {
-      setPlayer(p => ({ ...p, speed: 150 })); 
+      setPlayer(p => ({ ...p, isSlowed: false }));
     }, durationMs);
   }, []);
 

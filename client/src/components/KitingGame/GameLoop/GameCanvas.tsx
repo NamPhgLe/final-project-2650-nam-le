@@ -8,6 +8,8 @@ import { drawMushroomSprite } from '../Utils/drawMushroomSprite';
 import mushroomSprite from '../assets/mushroom_sprite.png';
 import playerSprite from '../assets/player_sprite.png';
 import bgScroll from '../assets/bg_scroll.jpg';
+import { drawPlayerStats } from '../Utils/drawPlayerStats';
+import type { ItemData } from '../../../constants/itemData';
 
 interface GameCanvasProps {
   width: number;
@@ -17,6 +19,9 @@ interface GameCanvasProps {
   cursorPos: Position | null;
   onRightClick: (pos: Position, clickedEnemy: boolean) => void;
   onStopMove: () => void;
+  stats: Record<string, number>;
+  items: { item: ItemData; img: string }[];
+  trinket?: { item: ItemData; img: string } | null;
 }
 
 export function GameCanvas({
@@ -27,6 +32,9 @@ export function GameCanvas({
   cursorPos,
   onRightClick,
   onStopMove,
+  stats,
+  items,
+  trinket
 }: GameCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const bgImageRef = useRef<HTMLImageElement>(new Image());
@@ -40,12 +48,7 @@ export function GameCanvas({
   const lastAttackTimeRef = useRef(0);
   const playerImageRef = useRef<HTMLImageElement>(new Image());
   const mushroomImageRef = useRef<HTMLImageElement>(new Image());
-  useEffect(() => {
-    mushroomImageRef.current.src = mushroomSprite;
-  }, []);
-  useEffect(() => {
-    playerImageRef.current.src = playerSprite;
-  }, []);
+
   const {
     player,
     setPlayer,
@@ -53,7 +56,7 @@ export function GameCanvas({
     setMoveTarget,
     setAttackTarget,
     applySlow,
-  } = usePlayer({ x: 200, y: 200 });
+  } = usePlayer({ x: 200, y: 200 }, stats);
 
   const {
     enemies,
@@ -61,7 +64,19 @@ export function GameCanvas({
     spawnMushroom,
     damage,
     updateEnemies,
+    killEnemy,
   } = useEnemy();
+
+  const [maxHealth, setMaxHealth] = useState(player.stats.health);
+  const [maxMana, setMaxMana] = useState(player.stats.mana);
+
+  useEffect(() => {
+    mushroomImageRef.current.src = mushroomSprite;
+  }, []);
+
+  useEffect(() => {
+    playerImageRef.current.src = playerSprite;
+  }, []);
 
   useEffect(() => {
     const img = bgImageRef.current;
@@ -77,6 +92,13 @@ export function GameCanvas({
     spawnBoss({ x: width - 50, y: height / 2 });
     spawnMushroom({ x: 100, y: height / 2 + 50 });
   }, []);
+  useEffect(() => {
+    setMaxHealth(player.stats.health);
+  }, []);
+
+  useEffect(() => {
+    setMaxMana(player.stats.mana);
+  }, []);
 
   useEffect(() => {
     let animationFrameId: number;
@@ -86,37 +108,59 @@ export function GameCanvas({
       const now = performance.now();
       const deltaTime = now - lastTime;
       lastTime = now;
-    
-      updateEnemies(deltaTime, player.position, width);
-      checkMushroomCollisions();
+
+      updateEnemies(deltaTime, width);
+      handleCollisions();
       handlePlayerBehavior(now, deltaTime);
-    
+
       scrollXRef.current = (scrollXRef.current + scrollSpeed) % (scaledWidthRef.current || width);
       draw();
-    
+
       animationFrameId = requestAnimationFrame(update);
     };
-    
+
+    const handleCollisions = () => {
+      enemies.forEach(enemy => {
+        if (!enemy.alive) return;
+        if (enemy.type !== 'mushroom') return;
+
+        const distToPlayer = distance(enemy.position, player.position);
+        const collision = distToPlayer < enemy.size / 2 + playerSize / 2;
+
+        if (collision) {
+          applySlow(enemy.slowDuration ?? 5000);
+          setPlayer(prev => ({
+            ...prev,
+            stats: {
+              ...prev.stats,
+              health: Math.max(0, (prev.stats.health ?? 0) - 50),
+            },
+          }));
+          killEnemy(enemy.id);
+        }
+      });
+    };
+
     const handlePlayerBehavior = (now: number, deltaTime: number) => {
       const boss = enemies.find(e => e.type === 'boss' && e.alive);
-    
+
       if (player.attackTarget === 'enemy' && boss) {
         const distToBoss = distance(player.position, boss.position);
         const inRange = distToBoss <= attackRange + playerSize / 2 + boss.size / 2;
-    
+
         if (!inRange) {
           moveToward(boss.position, deltaTime);
         } else if (now - lastAttackTimeRef.current >= attackCooldown) {
           damage(boss.id, 10);
           lastAttackTimeRef.current = now;
         }
-    
+
         if (!boss.alive) {
           setAttackTarget(null);
         }
         return;
       }
-    
+
       if (rightClickDown && cursorPos) {
         moveToward(cursorPos, deltaTime);
       } else if (player.moveTarget) {
@@ -124,24 +168,9 @@ export function GameCanvas({
       }
     };
     
-
     animationFrameId = requestAnimationFrame(update);
     return () => cancelAnimationFrame(animationFrameId);
   }, [player, enemies, cursorPos, rightClickDown, bgLoaded]);
-
-  const checkMushroomCollisions = () => {
-    enemies.forEach(enemy => {
-      if (enemy.type === 'mushroom' && enemy.alive) {
-        const dist = distance(player.position, enemy.position);
-        if (dist < (playerSize + enemy.size) / 2 && enemy.slowTimer === 0) {
-          applySlow(enemy.slowDuration ?? 0);
-          enemy.slowTimer = enemy.slowDuration ?? 0;
-        }
-      }
-    });
-  };
-
-
 
   const draw = () => {
     const ctx = canvasRef.current?.getContext('2d');
@@ -158,7 +187,7 @@ export function GameCanvas({
 
     enemies.forEach(enemy => {
       if (!enemy.alive) return;
-    
+
       if (enemy.type === 'mushroom') {
         drawMushroomSprite(ctx, mushroomImageRef.current, enemy.position, enemy.size, performance.now());
       } else {
@@ -167,19 +196,54 @@ export function GameCanvas({
         ctx.arc(enemy.position.x, enemy.position.y, enemy.size / 2, 0, Math.PI * 2);
         ctx.fill();
       }
-    
+
       ctx.fillStyle = 'black';
       ctx.fillRect(enemy.position.x - enemy.size / 2, enemy.position.y - enemy.size / 2 - 10, enemy.size, 5);
       ctx.fillStyle = 'green';
       ctx.fillRect(enemy.position.x - enemy.size / 2, enemy.position.y - enemy.size / 2 - 10, enemy.size * (enemy.hp / enemy.maxHp), 5);
     });
+
     const now = performance.now();
-    drawPlayerSprite(ctx, playerImageRef.current, player.position, playerSize, attackRange, now);    
+      drawPlayerStats(ctx, player, 10, 20);
+      drawPlayerSprite(ctx, playerImageRef.current, player.position, playerSize, attackRange, now, {
+      health: player.stats.health,
+      mana: player.stats.mana,
+      maxHealth,
+      maxMana ,  
+    });
 
     ctx.strokeStyle = 'rgba(0,0,255,0.5)';
     ctx.beginPath();
     ctx.arc(player.position.x, player.position.y, attackRange, 0, Math.PI * 2);
     ctx.stroke();
+    const slotsPerRow = 5;
+const iconSize = 40;
+const padding = 8;
+const inventoryX = 10;
+let inventoryY = height - ((Math.ceil(items.length / slotsPerRow) + 1) * (iconSize + padding));
+
+let row = 0;
+let col = 0;
+
+items.slice(0, items.length).forEach(({ img }, index) => {
+  const x = inventoryX + col * (iconSize + padding);
+  const y = inventoryY + row * (iconSize + padding);
+  const image = new Image();
+  image.src = img;
+  ctx.drawImage(image, x, y, iconSize, iconSize);
+
+  col++;
+  if (col >= slotsPerRow) {
+    col = 0;
+    row++;
+  }
+});
+
+if (trinket) {
+  const image = new Image();
+  image.src = trinket.img;
+  ctx.drawImage(image, inventoryX, inventoryY + row * (iconSize + padding), iconSize, iconSize);
+}
   };
 
   const handleContextMenu = (e: React.MouseEvent) => {
