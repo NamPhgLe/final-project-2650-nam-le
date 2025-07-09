@@ -14,7 +14,6 @@ import type { ItemData } from '../../../constants/itemData';
 interface GameCanvasProps {
   width: number;
   height: number;
-  attackRange: number;
   rightClickDown: boolean;
   cursorPos: Position | null;
   onRightClick: (pos: Position, clickedEnemy: boolean) => void;
@@ -22,26 +21,27 @@ interface GameCanvasProps {
   stats: Record<string, number>;
   items: { item: ItemData; img: string }[];
   trinket?: { item: ItemData; img: string } | null;
+  showAttackRangeCircle: boolean;
 }
 
 export function GameCanvas({
   width,
   height,
-  attackRange,
   rightClickDown,
   cursorPos,
   onRightClick,
   onStopMove,
   stats,
   items,
-  trinket
+  trinket,
+  showAttackRangeCircle  
 }: GameCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const bgImageRef = useRef<HTMLImageElement>(new Image());
   const [bgLoaded, setBgLoaded] = useState(false);
   const scrollXRef = useRef(0);
   const scaledWidthRef = useRef(0);
-
+  let attackRange = stats.attackRange;
   const playerSize = 50;
   const scrollSpeed = 2;
   const attackCooldown = 800;
@@ -143,11 +143,11 @@ export function GameCanvas({
 
     const handlePlayerBehavior = (now: number, deltaTime: number) => {
       const boss = enemies.find(e => e.type === 'boss' && e.alive);
-
+      console.log(stats.attackRange)
       if (player.attackTarget === 'enemy' && boss) {
+        attackRange = stats.attackRange ?? 100;
         const distToBoss = distance(player.position, boss.position);
         const inRange = distToBoss <= attackRange + playerSize / 2 + boss.size / 2;
-
         if (!inRange) {
           moveToward(boss.position, deltaTime);
         } else if (now - lastAttackTimeRef.current >= attackCooldown) {
@@ -170,7 +170,7 @@ export function GameCanvas({
     
     animationFrameId = requestAnimationFrame(update);
     return () => cancelAnimationFrame(animationFrameId);
-  }, [player, enemies, cursorPos, rightClickDown, bgLoaded]);
+  }, [player, enemies, cursorPos, rightClickDown, bgLoaded, stats]);
 
   const draw = () => {
     const ctx = canvasRef.current?.getContext('2d');
@@ -205,46 +205,44 @@ export function GameCanvas({
 
     const now = performance.now();
       drawPlayerStats(ctx, player, 10, 20);
-      drawPlayerSprite(ctx, playerImageRef.current, player.position, playerSize, attackRange, now, {
+      drawPlayerSprite(ctx, playerImageRef.current, player.position, playerSize, now, {
       health: player.stats.health,
       mana: player.stats.mana,
       maxHealth,
-      maxMana ,  
-    });
+      maxMana,  
+      attackRange: stats.attackRange ?? 70,
+    },  showAttackRangeCircle );
 
-    ctx.strokeStyle = 'rgba(0,0,255,0.5)';
-    ctx.beginPath();
-    ctx.arc(player.position.x, player.position.y, attackRange, 0, Math.PI * 2);
-    ctx.stroke();
+
     const slotsPerRow = 5;
-const iconSize = 40;
-const padding = 8;
-const inventoryX = 10;
-let inventoryY = height - ((Math.ceil(items.length / slotsPerRow) + 1) * (iconSize + padding));
+  const iconSize = 40;
+  const padding = 8;
+  const inventoryX = 10;
+  let inventoryY = height - ((Math.ceil(items.length / slotsPerRow) + 1) * (iconSize + padding));
 
-let row = 0;
-let col = 0;
+  let row = 0;
+  let col = 0;
 
-items.slice(0, items.length).forEach(({ img }, index) => {
-  const x = inventoryX + col * (iconSize + padding);
-  const y = inventoryY + row * (iconSize + padding);
-  const image = new Image();
-  image.src = img;
-  ctx.drawImage(image, x, y, iconSize, iconSize);
+  items.slice(0, items.length).forEach(({ img }, index) => {
+    const x = inventoryX + col * (iconSize + padding);
+    const y = inventoryY + row * (iconSize + padding);
+    const image = new Image();
+    image.src = img;
+    ctx.drawImage(image, x, y, iconSize, iconSize);
 
-  col++;
-  if (col >= slotsPerRow) {
-    col = 0;
-    row++;
+    col++;
+    if (col >= slotsPerRow) {
+      col = 0;
+      row++;
+    }
+  });
+
+  if (trinket) {
+    const image = new Image();
+    image.src = trinket.img;
+    ctx.drawImage(image, inventoryX, inventoryY + row * (iconSize + padding), iconSize, iconSize);
   }
-});
-
-if (trinket) {
-  const image = new Image();
-  image.src = trinket.img;
-  ctx.drawImage(image, inventoryX, inventoryY + row * (iconSize + padding), iconSize, iconSize);
-}
-  };
+    };
 
   const handleContextMenu = (e: React.MouseEvent) => {
     e.preventDefault();

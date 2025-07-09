@@ -120,6 +120,7 @@ export default function CombinedStats({ items, trinket, version }: CombinedStats
     baseStats.hpregen = calculateLevelStat(s.hpregen, s.hpregenperlevel, selectedLevel);
     baseStats.mpregen = calculateLevelStat(s.mpregen, s.mpregenperlevel, selectedLevel);
     baseStats.crit = calculateLevelStat(s.crit, s.critperlevel, selectedLevel);
+    baseStats.attackRange = s.attackrange;
   }
   const baseStatsRenamed: Record<string, number> = {};
   for (const [key, value] of Object.entries(baseStats)) {
@@ -131,7 +132,7 @@ export default function CombinedStats({ items, trinket, version }: CombinedStats
     combinedStats[renamedKey] = (combinedStats[renamedKey] || 0) + val;
   }
 
-  
+
   return (
     <div>
       <h2>Champion and Inventory Combined Stats</h2>

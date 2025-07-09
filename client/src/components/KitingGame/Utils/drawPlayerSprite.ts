@@ -14,15 +14,15 @@ export function drawPlayerSprite(
   sprite: HTMLImageElement,
   position: Position,
   size: number,
-  attackRange: number,
   now: number,
-  stats: { health: number; mana: number; maxHealth: number; maxMana: number }
+  stats: { health: number; mana: number; maxHealth: number; maxMana: number; attackRange?: number},
+  showAttackRangeCircle: boolean,  
 ) {
   if (now - lastFrameTime > frameDuration) {
     frameIndex = (frameIndex + 1) % totalFrames;
     lastFrameTime = now;
   }
-
+  const attackRange = stats.attackRange ?? 100;
   const movingLeft = position.x < lastX;
   lastX = position.x;
 
@@ -46,11 +46,12 @@ export function drawPlayerSprite(
   );
 
   ctx.restore();
-
-  ctx.strokeStyle = 'rgba(0,0,255,0.5)';
-  ctx.beginPath();
-  ctx.arc(position.x, position.y, attackRange, 0, Math.PI * 2);
-  ctx.stroke();
+  if (showAttackRangeCircle) {
+    ctx.strokeStyle = 'rgba(0,0,255,0.5)';
+    ctx.beginPath();
+    ctx.arc(position.x, position.y, attackRange, 0, Math.PI * 2);
+    ctx.stroke();
+  }
 
   const healthBarWidth = size;
   const healthBarHeight = 8;
