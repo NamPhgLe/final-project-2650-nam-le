@@ -4,48 +4,42 @@ import { statNameMap } from '../../../../constants/statNameMap';
 import { riotStatKeyMap } from '../../../../constants/riotStatNameMap';
 
 interface ItemStatsFilterProps {
-  availableStats: string[];
-  selectedStats: string[];
+  availableStats: string[]; // e.g., ["FlatArmorMod", "FlatHPRegenMod"]
+  selectedStats: string[];  // still uses the original keys like "FlatArmorMod"
   onChange: (selected: string[]) => void;
 }
 
-// fallback formatter: camelCase to "Camel Case"
+// fallback formatter: camelCase → "Camel Case"
 const formatFallbackName = (key: string) =>
   key.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, s => s.toUpperCase());
-
-const normalizeKey = (stat: string) => riotStatKeyMap[stat] || stat;
 
 const ItemStatsFilter: React.FC<ItemStatsFilterProps> = ({
   availableStats,
   selectedStats,
   onChange,
 }) => {
-  // Normalize and deduplicate stat keys
-  const normalizedStats = Array.from(
-    new Set(availableStats.map(normalizeKey))
-  );
-
   useEffect(() => {
-    console.log('Normalized stats:', normalizedStats);
+    console.log('Available stats:', availableStats);
   }, [availableStats]);
 
   return (
     <div className={styles.container}>
       <h3 className={styles.heading}>Filter by Stats:</h3>
       <div className={styles.buttonsContainer}>
-        {normalizedStats.map(stat => {
-          const isSelected = selectedStats.includes(stat);
-          const label = statNameMap[stat] || formatFallbackName(stat);
+        {availableStats.map(originalKey => {
+          const normalizedKey = riotStatKeyMap[originalKey] || originalKey;
+          const label = statNameMap[normalizedKey] || formatFallbackName(normalizedKey);
+          const isSelected = selectedStats.includes(originalKey); // use original for state
 
           return (
             <button
-              key={stat}
+              key={originalKey}
               type="button"
               className={`${styles.btn} ${isSelected ? styles.active : styles.inactive}`}
               onClick={() => {
                 const next = isSelected
-                  ? selectedStats.filter(s => s !== stat)
-                  : [...selectedStats, stat];
+                  ? selectedStats.filter(s => s !== originalKey)
+                  : [...selectedStats, originalKey];
                 onChange(next);
               }}
             >

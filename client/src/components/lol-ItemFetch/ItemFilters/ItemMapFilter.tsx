@@ -1,33 +1,16 @@
-import React, { useState } from 'react';
-
-interface ItemData {
-  name: string;
-  maps: Record<string, boolean>;
-  gold: {
-    total: number;
-  };
-}
+import React from 'react';
 
 interface MapFilterProps {
-  items: Record<string, ItemData>;
-  version: string;
-  showText: boolean;
-}
-
-const MAP_NAMES: Record<string, string> = {
-  '11': 'Summoner’s Rift',
-  '12': 'Howling Abyss',
-  '21': 'Nexus Blitz',
-  '30': 'Crystal Scar',
-};
-
-interface MapFilterProps {
-  items: Record<string, ItemData>;
+  items: Record<string, any>; 
   version: string;
   showText: boolean;
   selectedMap: string | null;
   onSelectMap: React.Dispatch<React.SetStateAction<string | null>>;
 }
+
+const MAP_NAMES: Record<string, string> = {
+  '11': 'Summoner’s Rift',
+};
 
 export default function MapFilter({ selectedMap, onSelectMap }: MapFilterProps) {
   const allMaps = Object.keys(MAP_NAMES);
@@ -48,7 +31,7 @@ export default function MapFilter({ selectedMap, onSelectMap }: MapFilterProps) 
             className={`btn btn-sm btn-outline-primary me-2 ${selectedMap === mapId ? 'active' : ''}`}
             onClick={() => onSelectMap(mapId)}
           >
-            {MAP_NAMES[mapId] ?? mapId}
+            {MAP_NAMES[mapId] ?? `Map ${mapId}`}
           </button>
         ))}
       </div>

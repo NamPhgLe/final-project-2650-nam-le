@@ -18,7 +18,7 @@ export default function ItemFetcher() {
   const [version, setVersion] = useState<string | null>(null);
   const [showText, setShowText] = useState(true);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
-  const [selectedMap, setSelectedMap] = useState<string | null>(null);
+  const [selectedMap, setSelectedMap] = useState<string | null>('11');
   const [selectedSort, setSelectedSort] = useState<string>('gold');
   const [selectedStats, setSelectedStats] = useState<string[]>(['gold']);
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -90,6 +90,7 @@ export default function ItemFetcher() {
         availableStats={allStatKeys}
         selectedStats={selectedStats}
         onChange={setSelectedStats}
+        
       />
 
       <ItemSearchFilter onSearch={setSearchTerm} />
@@ -149,6 +150,7 @@ export default function ItemFetcher() {
             onSelectItem={setSelectedItemId}
             img={`https://ddragon.leagueoflegends.com/cdn/${version}/img/item/${selectedItemId}.png`}
             onBuyItem={handleBuyItem}
+            selectedMap={selectedMap} 
           />
         )}
 

@@ -12,7 +12,13 @@ interface ItemDescriptionProps {
     onSelectItem: (id: string) => void;
     img?: string;
     onBuyItem?: (item: ItemData, img: string) => void;
+    selectedMap?: string | null;
 }
+
+export function isItemInMap(item: ItemData, mapId: string | null): boolean {
+    if (!mapId) return true;
+    return item.maps?.[mapId] === true;
+  }
 
 export default function ItemDescription({
     item,
@@ -21,6 +27,7 @@ export default function ItemDescription({
     onSelectItem,
     img,
     onBuyItem,
+    selectedMap,
 }: ItemDescriptionProps) {
 
     const uniqueByName = (list: { id: string; data: ItemData }[]) => {
@@ -59,26 +66,25 @@ export default function ItemDescription({
     };
 
     const directBuildsInto = (item.into ?? [])
-        .filter((id) => items[id])
-        .map((id) => ({ id, data: items[id] }));
+    .filter((id) => items[id] && isItemInMap(items[id], selectedMap ?? null))
+    .map((id) => ({ id, data: items[id] }));
 
     const safeFrom = Array.isArray(item.from) ? item.from : [];
-
     const requiredComponentsWithCount = useMemo(() => {
         const countMap: Record<string, number> = {};
-
+      
         for (const id of safeFrom) {
-            countMap[id] = (countMap[id] || 0) + 1;
+          countMap[id] = (countMap[id] || 0) + 1;
         }
-
+      
         return Object.entries(countMap)
-            .filter(([id]) => items[id])
-            .map(([id, count]) => ({
-                id,
-                count,
-                data: items[id],
-            }));
-    }, [safeFrom, items]);
+          .filter(([id]) => items[id] && isItemInMap(items[id], selectedMap ?? null)) 
+          .map(([id, count]) => ({
+            id,
+            count,
+            data: items[id],
+          }));
+      }, [safeFrom, items, selectedMap]);
 
     const uniqueBuildsInto = uniqueByName(directBuildsInto);
 
