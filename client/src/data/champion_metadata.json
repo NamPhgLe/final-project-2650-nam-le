@@ -35,7 +35,7 @@
     "region": "Freljord",
     "lane": "Bot"
   },
-  "Aurelion Sol": {
+  "AurelionSol": {
     "region": "Targon",
     "lane": "Mid"
   },
@@ -47,7 +47,7 @@
     "region": "Runeterra",
     "lane": "Support"
   },
-  "Bel'Veth": {
+  "Belveth": {
     "region": "Void",
     "lane": "Jungle"
   },
@@ -75,7 +75,7 @@
     "region": "Noxus",
     "lane": "Mid"
   },
-  "Cho'Gath": {
+  "Chogath": {
     "region": "Void",
     "lane": "Top"
   },
@@ -91,7 +91,7 @@
     "region": "Targon",
     "lane": "Mid"
   },
-  "Dr. Mundo": {
+  "DrMundo": {
     "region": "Zaun",
     "lane": "Top"
   },
@@ -179,7 +179,7 @@
     "region": "Zaun",
     "lane": "Support"
   },
-  "Jarvan IV": {
+  "JarvanIV": {
     "region": "Demacia",
     "lane": "Jungle"
   },
@@ -199,7 +199,7 @@
     "region": "Zaun",
     "lane": "Bot"
   },
-  "Kai'Sa": {
+  "Kaisa": {
     "region": "Void",
     "lane": "Bot"
   },
@@ -235,7 +235,7 @@
     "region": "Ionia",
     "lane": "Top"
   },
-  "Kha'Zix": {
+  "Khazix": {
     "region": "Void",
     "lane": "Jungle"
   },
@@ -247,15 +247,15 @@
     "region": "Noxus",
     "lane": "Top"
   },
-  "Kog'Maw": {
+  "KogMaw": {
     "region": "Void",
     "lane": "Bot"
   },
-  "LeBlanc": {
+  "Leblanc": {
     "region": "Noxus",
     "lane": "Mid"
   },
-  "Lee Sin": {
+  "LeeSin": {
     "region": "Ionia",
     "lane": "Jungle"
   },
@@ -295,11 +295,11 @@
     "region": "Shadow Isles",
     "lane": "Support"
   },
-  "Master Yi": {
+  "MasterYi": {
     "region": "Ionia",
     "lane": "Jungle"
   },
-  "Miss Fortune": {
+  "MissFortune": {
     "region": "Bilgewater",
     "lane": "Bot"
   },
@@ -339,7 +339,7 @@
     "region": "Runeterra",
     "lane": "Jungle"
   },
-  "Nunu & Willump": {
+  "Nunu": {
     "region": "Freljord",
     "lane": "Jungle"
   },
@@ -383,7 +383,7 @@
     "region": "Shurima",
     "lane": "Jungle"
   },
-  "Rek'Sai": {
+  "RekSai": {
     "region": "Void",
     "lane": "Jungle"
   },
@@ -391,7 +391,7 @@
     "region": "Noxus",
     "lane": "Support"
   },
-  "Renata Glasc": {
+  "Renata": {
     "region": "Zaun",
     "lane": "Support"
   },
@@ -483,7 +483,7 @@
     "region": "Ionia",
     "lane": "Mid"
   },
-  "Tahm Kench": {
+  "TahmKench": {
     "region": "Bilgewater",
     "lane": "Support"
   },
@@ -519,7 +519,7 @@
     "region": "Freljord",
     "lane": "Top"
   },
-  "Twisted Fate": {
+  "TwistedFate": {
     "region": "Bilgewater",
     "lane": "Mid"
   },
@@ -547,7 +547,7 @@
     "region": "Bandle City",
     "lane": "Mid"
   },
-  "Vel'Koz": {
+  "Velkoz": {
     "region": "Void",
     "lane": "Mid"
   },
@@ -579,7 +579,7 @@
     "region": "Zaun",
     "lane": "Jungle"
   },
-  "Wukong": {
+  "MonkeyKing": {
     "region": "Ionia",
     "lane": "Top"
   },
@@ -591,7 +591,7 @@
     "region": "Shurima",
     "lane": "Mid"
   },
-  "Xin Zhao": {
+  "XinZhao": {
     "region": "Demacia",
     "lane": "Jungle"
   },

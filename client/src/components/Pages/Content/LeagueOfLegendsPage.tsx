@@ -36,14 +36,20 @@ const LeagueOfLegendsPage: React.FC = () => {
       })
       .then(res => res.json())
       .then((data: any) => {
-        const list: ChampionData[] = Object.keys(data.data).map(key => {
-          const meta = championMetaMap[key] ?? { region: 'Unknown', lane: 'All' };
+        const list: ChampionData[] = Object.keys(data.data)
+        .map(key => {
+          const meta = championMetaMap[key];
+          if (!meta || meta.lane === 'Unknown') {
+            console.log(`Filtered out: ${key}`, meta);
+            return null;
+          }
           return {
             id: key,
             region: meta.region,
             lane: meta.lane
           };
-        });
+        })
+        .filter((c): c is ChampionData => c !== null);
         setChampions(list);
       })
       .catch(console.error);
