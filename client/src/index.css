@@ -4,9 +4,9 @@ html, body, #root {
   height: 100%;
   margin: 0;
   padding: 0;
-  background-color: #121212; 
-  color: #f8f9fa;            
-  font-family: sans-serif, monospace;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: 'Inter', sans-serif;
 }
 
 a {
