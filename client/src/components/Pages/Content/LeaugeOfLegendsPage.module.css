@@ -1,4 +1,3 @@
-/* Animations */
 @keyframes slideInFromLeft {
     0% {
       opacity: 0;
@@ -21,7 +20,6 @@
     }
   }
   
-  /* Button text slides left to right */
   .slideInText {
     opacity: 0;
     animation-name: slideInFromLeft;
@@ -29,7 +27,6 @@
     animation-fill-mode: forwards;
   }
   
-  /* Champion cards slide up */
   .slideInCard {
     opacity: 0;
     animation-name: slideInFromBottom;

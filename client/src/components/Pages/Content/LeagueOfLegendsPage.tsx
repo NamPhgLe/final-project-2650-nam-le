@@ -38,12 +38,10 @@ const LeagueOfLegendsPage: React.FC = () => {
   const splashUrl = (champId: string) =>
     `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champId}_0.jpg`;
 
-  // Add "All" region and sort
   const regions = Array.from(
     new Set(champions.map((champ) => champ.region).concat('All'))
   ).sort();
 
-  // Filter champions by region
   const visibleChamps =
     selectedRegion === 'All'
       ? champions
@@ -58,7 +56,6 @@ const LeagueOfLegendsPage: React.FC = () => {
         Click on a region tab to view its champions.
       </p>
 
-      {/* Region filter buttons */}
       <div
         style={{
           display: 'flex',
@@ -91,7 +88,6 @@ const LeagueOfLegendsPage: React.FC = () => {
         ))}
       </div>
 
-      {/* Champion cards grid */}
       <div
         style={{
           display: 'grid',
@@ -115,7 +111,7 @@ const LeagueOfLegendsPage: React.FC = () => {
               style={{
                 position: 'relative',
                 width: '100%',
-                paddingTop: '56.25%', // 16:9 aspect ratio
+                paddingTop: '56.25%', 
               }}
             >
               <img
