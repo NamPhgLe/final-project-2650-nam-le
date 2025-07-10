@@ -1,0 +1,682 @@
+{
+  "Aatrox": {
+    "region": "Runeterra",
+    "lane": "Top"
+  },
+  "Ahri": {
+    "region": "Ionia",
+    "lane": "Mid"
+  },
+  "Akali": {
+    "region": "Ionia",
+    "lane": "Mid"
+  },
+  "Alistar": {
+    "region": "Runeterra",
+    "lane": "Support"
+  },
+  "Amumu": {
+    "region": "Shurima",
+    "lane": "Jungle"
+  },
+  "Anivia": {
+    "region": "Freljord",
+    "lane": "Mid"
+  },
+  "Annie": {
+    "region": "Noxus",
+    "lane": "Mid"
+  },
+  "Aphelios": {
+    "region": "Targon",
+    "lane": "Bot"
+  },
+  "Ashe": {
+    "region": "Freljord",
+    "lane": "Bot"
+  },
+  "Aurelion Sol": {
+    "region": "Targon",
+    "lane": "Mid"
+  },
+  "Azir": {
+    "region": "Shurima",
+    "lane": "Mid"
+  },
+  "Bard": {
+    "region": "Runeterra",
+    "lane": "Support"
+  },
+  "Bel'Veth": {
+    "region": "Void",
+    "lane": "Jungle"
+  },
+  "Blitzcrank": {
+    "region": "Zaun",
+    "lane": "Support"
+  },
+  "Brand": {
+    "region": "Freljord",
+    "lane": "Support"
+  },
+  "Braum": {
+    "region": "Freljord",
+    "lane": "Support"
+  },
+  "Caitlyn": {
+    "region": "Piltover",
+    "lane": "Bot"
+  },
+  "Camille": {
+    "region": "Piltover",
+    "lane": "Top"
+  },
+  "Cassiopeia": {
+    "region": "Noxus",
+    "lane": "Mid"
+  },
+  "Cho'Gath": {
+    "region": "Void",
+    "lane": "Top"
+  },
+  "Corki": {
+    "region": "Bandle City",
+    "lane": "Bot"
+  },
+  "Darius": {
+    "region": "Noxus",
+    "lane": "Top"
+  },
+  "Diana": {
+    "region": "Targon",
+    "lane": "Mid"
+  },
+  "Dr. Mundo": {
+    "region": "Zaun",
+    "lane": "Top"
+  },
+  "Draven": {
+    "region": "Noxus",
+    "lane": "Bot"
+  },
+  "Ekko": {
+    "region": "Zaun",
+    "lane": "Mid"
+  },
+  "Elise": {
+    "region": "Shadow Isles",
+    "lane": "Jungle"
+  },
+  "Evelynn": {
+    "region": "Runeterra",
+    "lane": "Jungle"
+  },
+  "Ezreal": {
+    "region": "Piltover",
+    "lane": "Bot"
+  },
+  "Fiddlesticks": {
+    "region": "Runeterra",
+    "lane": "Jungle"
+  },
+  "Fiora": {
+    "region": "Demacia",
+    "lane": "Top"
+  },
+  "Fizz": {
+    "region": "Bilgewater",
+    "lane": "Mid"
+  },
+  "Galio": {
+    "region": "Demacia",
+    "lane": "Mid"
+  },
+  "Gangplank": {
+    "region": "Bilgewater",
+    "lane": "Top"
+  },
+  "Garen": {
+    "region": "Demacia",
+    "lane": "Top"
+  },
+  "Gnar": {
+    "region": "Freljord",
+    "lane": "Top"
+  },
+  "Gragas": {
+    "region": "Freljord",
+    "lane": "Jungle"
+  },
+  "Graves": {
+    "region": "Bilgewater",
+    "lane": "Jungle"
+  },
+  "Gwen": {
+    "region": "Shadow Isles",
+    "lane": "Top"
+  },
+  "Hecarim": {
+    "region": "Shadow Isles",
+    "lane": "Jungle"
+  },
+  "Heimerdinger": {
+    "region": "Piltover",
+    "lane": "Mid"
+  },
+  "Illaoi": {
+    "region": "Bilgewater",
+    "lane": "Top"
+  },
+  "Irelia": {
+    "region": "Ionia",
+    "lane": "Top"
+  },
+  "Ivern": {
+    "region": "Ionia",
+    "lane": "Jungle"
+  },
+  "Janna": {
+    "region": "Zaun",
+    "lane": "Support"
+  },
+  "Jarvan IV": {
+    "region": "Demacia",
+    "lane": "Jungle"
+  },
+  "Jax": {
+    "region": "Runeterra",
+    "lane": "Top"
+  },
+  "Jayce": {
+    "region": "Piltover",
+    "lane": "Top"
+  },
+  "Jhin": {
+    "region": "Ionia",
+    "lane": "Bot"
+  },
+  "Jinx": {
+    "region": "Zaun",
+    "lane": "Bot"
+  },
+  "Kai'Sa": {
+    "region": "Void",
+    "lane": "Bot"
+  },
+  "Kalista": {
+    "region": "Shadow Isles",
+    "lane": "Bot"
+  },
+  "Karma": {
+    "region": "Ionia",
+    "lane": "Support"
+  },
+  "Karthus": {
+    "region": "Shadow Isles",
+    "lane": "Jungle"
+  },
+  "Kassadin": {
+    "region": "Void",
+    "lane": "Mid"
+  },
+  "Katarina": {
+    "region": "Noxus",
+    "lane": "Mid"
+  },
+  "Kayle": {
+    "region": "Demacia",
+    "lane": "Top"
+  },
+  "Kayn": {
+    "region": "Ionia",
+    "lane": "Jungle"
+  },
+  "Kennen": {
+    "region": "Ionia",
+    "lane": "Top"
+  },
+  "Kha'Zix": {
+    "region": "Void",
+    "lane": "Jungle"
+  },
+  "Kindred": {
+    "region": "Runeterra",
+    "lane": "Jungle"
+  },
+  "Kled": {
+    "region": "Noxus",
+    "lane": "Top"
+  },
+  "Kog'Maw": {
+    "region": "Void",
+    "lane": "Bot"
+  },
+  "LeBlanc": {
+    "region": "Noxus",
+    "lane": "Mid"
+  },
+  "Lee Sin": {
+    "region": "Ionia",
+    "lane": "Jungle"
+  },
+  "Leona": {
+    "region": "Targon",
+    "lane": "Support"
+  },
+  "Lillia": {
+    "region": "Ionia",
+    "lane": "Jungle"
+  },
+  "Lissandra": {
+    "region": "Freljord",
+    "lane": "Mid"
+  },
+  "Lucian": {
+    "region": "Demacia",
+    "lane": "Bot"
+  },
+  "Lulu": {
+    "region": "Bandle City",
+    "lane": "Support"
+  },
+  "Lux": {
+    "region": "Demacia",
+    "lane": "Mid"
+  },
+  "Malphite": {
+    "region": "Ixtal",
+    "lane": "Top"
+  },
+  "Malzahar": {
+    "region": "Void",
+    "lane": "Mid"
+  },
+  "Maokai": {
+    "region": "Shadow Isles",
+    "lane": "Support"
+  },
+  "Master Yi": {
+    "region": "Ionia",
+    "lane": "Jungle"
+  },
+  "Miss Fortune": {
+    "region": "Bilgewater",
+    "lane": "Bot"
+  },
+  "Mordekaiser": {
+    "region": "Noxus",
+    "lane": "Top"
+  },
+  "Morgana": {
+    "region": "Demacia",
+    "lane": "Support"
+  },
+  "Nami": {
+    "region": "Runeterra",
+    "lane": "Support"
+  },
+  "Nasus": {
+    "region": "Shurima",
+    "lane": "Top"
+  },
+  "Nautilus": {
+    "region": "Bilgewater",
+    "lane": "Support"
+  },
+  "Neeko": {
+    "region": "Ixtal",
+    "lane": "Support"
+  },
+  "Nidalee": {
+    "region": "Ixtal",
+    "lane": "Jungle"
+  },
+  "Nilah": {
+    "region": "Bilgewater",
+    "lane": "Bot"
+  },
+  "Nocturne": {
+    "region": "Runeterra",
+    "lane": "Jungle"
+  },
+  "Nunu & Willump": {
+    "region": "Freljord",
+    "lane": "Jungle"
+  },
+  "Olaf": {
+    "region": "Freljord",
+    "lane": "Jungle"
+  },
+  "Orianna": {
+    "region": "Piltover",
+    "lane": "Mid"
+  },
+  "Ornn": {
+    "region": "Freljord",
+    "lane": "Top"
+  },
+  "Pantheon": {
+    "region": "Targon",
+    "lane": "Jungle"
+  },
+  "Poppy": {
+    "region": "Demacia",
+    "lane": "Top"
+  },
+  "Pyke": {
+    "region": "Bilgewater",
+    "lane": "Support"
+  },
+  "Qiyana": {
+    "region": "Ixtal",
+    "lane": "Mid"
+  },
+  "Quinn": {
+    "region": "Demacia",
+    "lane": "Top"
+  },
+  "Rakan": {
+    "region": "Ionia",
+    "lane": "Support"
+  },
+  "Rammus": {
+    "region": "Shurima",
+    "lane": "Jungle"
+  },
+  "Rek'Sai": {
+    "region": "Void",
+    "lane": "Jungle"
+  },
+  "Rell": {
+    "region": "Noxus",
+    "lane": "Support"
+  },
+  "Renata Glasc": {
+    "region": "Zaun",
+    "lane": "Support"
+  },
+  "Renekton": {
+    "region": "Shurima",
+    "lane": "Top"
+  },
+  "Rengar": {
+    "region": "Shurima",
+    "lane": "Jungle"
+  },
+  "Riven": {
+    "region": "Noxus",
+    "lane": "Top"
+  },
+  "Rumble": {
+    "region": "Bandle City",
+    "lane": "Top"
+  },
+  "Ryze": {
+    "region": "Runeterra",
+    "lane": "Mid"
+  },
+  "Samira": {
+    "region": "Noxus",
+    "lane": "Bot"
+  },
+  "Sejuani": {
+    "region": "Freljord",
+    "lane": "Jungle"
+  },
+  "Senna": {
+    "region": "Shadow Isles",
+    "lane": "Bot"
+  },
+  "Seraphine": {
+    "region": "Piltover",
+    "lane": "Support"
+  },
+  "Sett": {
+    "region": "Ionia",
+    "lane": "Top"
+  },
+  "Shaco": {
+    "region": "Runeterra",
+    "lane": "Jungle"
+  },
+  "Shen": {
+    "region": "Ionia",
+    "lane": "Top"
+  },
+  "Shyvana": {
+    "region": "Demacia",
+    "lane": "Jungle"
+  },
+  "Singed": {
+    "region": "Zaun",
+    "lane": "Top"
+  },
+  "Sion": {
+    "region": "Noxus",
+    "lane": "Top"
+  },
+  "Sivir": {
+    "region": "Shurima",
+    "lane": "Bot"
+  },
+  "Skarner": {
+    "region": "Shurima",
+    "lane": "Jungle"
+  },
+  "Sona": {
+    "region": "Demacia",
+    "lane": "Support"
+  },
+  "Soraka": {
+    "region": "Targon",
+    "lane": "Support"
+  },
+  "Swain": {
+    "region": "Noxus",
+    "lane": "Mid"
+  },
+  "Sylas": {
+    "region": "Demacia",
+    "lane": "Mid"
+  },
+  "Syndra": {
+    "region": "Ionia",
+    "lane": "Mid"
+  },
+  "Tahm Kench": {
+    "region": "Bilgewater",
+    "lane": "Support"
+  },
+  "Taliyah": {
+    "region": "Shurima",
+    "lane": "Mid"
+  },
+  "Talon": {
+    "region": "Noxus",
+    "lane": "Mid"
+  },
+  "Taric": {
+    "region": "Targon",
+    "lane": "Support"
+  },
+  "Teemo": {
+    "region": "Bandle City",
+    "lane": "Top"
+  },
+  "Thresh": {
+    "region": "Shadow Isles",
+    "lane": "Support"
+  },
+  "Tristana": {
+    "region": "Bandle City",
+    "lane": "Bot"
+  },
+  "Trundle": {
+    "region": "Freljord",
+    "lane": "Top"
+  },
+  "Tryndamere": {
+    "region": "Freljord",
+    "lane": "Top"
+  },
+  "Twisted Fate": {
+    "region": "Bilgewater",
+    "lane": "Mid"
+  },
+  "Twitch": {
+    "region": "Zaun",
+    "lane": "Bot"
+  },
+  "Udyr": {
+    "region": "Freljord",
+    "lane": "Jungle"
+  },
+  "Urgot": {
+    "region": "Zaun",
+    "lane": "Top"
+  },
+  "Varus": {
+    "region": "Ionia",
+    "lane": "Bot"
+  },
+  "Vayne": {
+    "region": "Demacia",
+    "lane": "Bot"
+  },
+  "Veigar": {
+    "region": "Bandle City",
+    "lane": "Mid"
+  },
+  "Vel'Koz": {
+    "region": "Void",
+    "lane": "Mid"
+  },
+  "Vex": {
+    "region": "Shadow Isles",
+    "lane": "Mid"
+  },
+  "Vi": {
+    "region": "Piltover",
+    "lane": "Jungle"
+  },
+  "Viego": {
+    "region": "Shadow Isles",
+    "lane": "Jungle"
+  },
+  "Viktor": {
+    "region": "Zaun",
+    "lane": "Mid"
+  },
+  "Vladimir": {
+    "region": "Noxus",
+    "lane": "Mid"
+  },
+  "Volibear": {
+    "region": "Freljord",
+    "lane": "Jungle"
+  },
+  "Warwick": {
+    "region": "Zaun",
+    "lane": "Jungle"
+  },
+  "Wukong": {
+    "region": "Ionia",
+    "lane": "Top"
+  },
+  "Xayah": {
+    "region": "Ionia",
+    "lane": "Bot"
+  },
+  "Xerath": {
+    "region": "Shurima",
+    "lane": "Mid"
+  },
+  "Xin Zhao": {
+    "region": "Demacia",
+    "lane": "Jungle"
+  },
+  "Yasuo": {
+    "region": "Ionia",
+    "lane": "Mid"
+  },
+  "Yone": {
+    "region": "Ionia",
+    "lane": "Mid"
+  },
+  "Yorick": {
+    "region": "Shadow Isles",
+    "lane": "Top"
+  },
+  "Yuumi": {
+    "region": "Bandle City",
+    "lane": "Support"
+  },
+  "Zac": {
+    "region": "Zaun",
+    "lane": "Jungle"
+  },
+  "Zed": {
+    "region": "Ionia",
+    "lane": "Mid"
+  },
+  "Zeri": {
+    "region": "Zaun",
+    "lane": "Bot"
+  },
+  "Ziggs": {
+    "region": "Zaun",
+    "lane": "Mid"
+  },
+  "Zilean": {
+    "region": "Runeterra",
+    "lane": "Support"
+  },
+  "Zoe": {
+    "region": "Targon",
+    "lane": "Mid"
+  },
+  "Zyra": {
+    "region": "Ixtal",
+    "lane": "Support"
+  },
+  "Akshan": {
+    "region": "Shurima",
+    "lane": "Bot"
+  },
+  "Ambessa": {
+    "region": "Noxus",
+    "lane": "Top"
+  },
+  "Aurora": {
+    "region": "Ionia",
+    "lane": "Mid"
+  },
+  "Briar": {
+    "region": "Noxus",
+    "lane": "Jungle"
+  },
+  "Hwei": {
+    "region": "Ionia",
+    "lane": "Mid"
+  },
+  "KSante": {
+    "region": "Shurima",
+    "lane": "Top"
+  },
+  "Mel": {
+    "region": "Piltover",
+    "lane": "Support"
+  },
+  "Milio": {
+    "region": "Ixtal",
+    "lane": "Support"
+  },
+  "Naafiri": {
+    "region": "Shurima",
+    "lane": "Jungle"
+  },
+  "Smolder": {
+    "region": "Targon",
+    "lane": "Bot"
+  }
+}
