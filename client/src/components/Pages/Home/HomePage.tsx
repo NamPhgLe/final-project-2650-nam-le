@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './HomePage.module.css';
 import Options from './Options';
 import Welcome from './Welcome';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const preloadLeague = () => import('../Content/LeagueOfLegendsPage');
 
@@ -12,16 +12,32 @@ const HomePage: React.FC = () => {
   const [slideOutOptions, setSlideOutOptions] = useState(false);
   const [isLoadingLeague, setIsLoadingLeague] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === '/') {
+      setShowOptions(false);
+      setSlideOutWelcome(false);
+      setSlideOutOptions(false);
+      setIsLoadingLeague(false);
+    }
+  }, [location.pathname]);
 
   const handleGetStarted = () => {
-    setShowOptions(true);
+    if (showOptions) {
+      setShowOptions(false);
+      setSlideOutWelcome(false); 
+      setSlideOutOptions(false);
+    } else {
+      setShowOptions(true);
+    }
   };
 
   const handleGameSelect = () => {
     setIsLoadingLeague(true);
 
     preloadLeague().then(() => {
-      setIsLoadingLeague(false); 
+      setIsLoadingLeague(false);
 
       setSlideOutWelcome(true);
       setSlideOutOptions(true);

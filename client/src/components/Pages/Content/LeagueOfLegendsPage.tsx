@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import championRegionRaw from '../../../data/champion_regions.json';
+import styles from './LeaugeOfLegendsPage.module.css';
 
 interface ChampionData {
   id: string;
@@ -37,10 +38,12 @@ const LeagueOfLegendsPage: React.FC = () => {
   const splashUrl = (champId: string) =>
     `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champId}_0.jpg`;
 
+  // Add "All" region and sort
   const regions = Array.from(
     new Set(champions.map((champ) => champ.region).concat('All'))
   ).sort();
 
+  // Filter champions by region
   const visibleChamps =
     selectedRegion === 'All'
       ? champions
@@ -55,7 +58,7 @@ const LeagueOfLegendsPage: React.FC = () => {
         Click on a region tab to view its champions.
       </p>
 
-      {/* Region Tabs */}
+      {/* Region filter buttons */}
       <div
         style={{
           display: 'flex',
@@ -64,11 +67,13 @@ const LeagueOfLegendsPage: React.FC = () => {
           marginBottom: '2rem',
         }}
       >
-        {regions.map((region) => (
+        {regions.map((region, idx) => (
           <button
             key={region}
             onClick={() => setSelectedRegion(region)}
+            className={styles.slideInText}
             style={{
+              animationDelay: `${idx * 100}ms`,
               padding: '0.5rem 1rem',
               fontWeight: 600,
               fontSize: '0.95rem',
@@ -86,7 +91,7 @@ const LeagueOfLegendsPage: React.FC = () => {
         ))}
       </div>
 
-      {/* Champion Grid */}
+      {/* Champion cards grid */}
       <div
         style={{
           display: 'grid',
@@ -94,10 +99,12 @@ const LeagueOfLegendsPage: React.FC = () => {
           gap: '1.5rem',
         }}
       >
-        {visibleChamps.map((champ) => (
+        {visibleChamps.map((champ, idx) => (
           <div
             key={champ.id}
+            className={styles.slideInCard}
             style={{
+              animationDelay: `${idx * 100}ms`,
               borderRadius: '8px',
               overflow: 'hidden',
               boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
@@ -108,7 +115,7 @@ const LeagueOfLegendsPage: React.FC = () => {
               style={{
                 position: 'relative',
                 width: '100%',
-                paddingTop: '56.25%',
+                paddingTop: '56.25%', // 16:9 aspect ratio
               }}
             >
               <img
