@@ -3,6 +3,10 @@ import championMetaRaw from '../../../data/champion_metadata.json';
 type RawMeta = Record<string, { region: string; lane: string }>;
 import styles from './LeaugeOfLegendsPage.module.css';
 import ChampionStatsPage from './ChampionStatsPage';
+import { useInventory } from '../../../hooks/useInventory';
+import type { ItemData } from '../../../constants/itemData';
+
+type ItemMap = Record<string, ItemData>;
 
 const championMetaMap = championMetaRaw as unknown as RawMeta;
 
@@ -19,11 +23,43 @@ const LeagueOfLegendsPage: React.FC = () => {
   const [champions, setChampions] = useState<ChampionData[]>([]);
   const [selectedRegion, setSelectedRegion] = useState<'All' | string>('All');
   const [selectedLane, setSelectedLane] = useState<Lane>('All');
-  const [version, setVersion] = useState('');
   const [currentChampion, setCurrentChampion] = useState<string | null>(null);
   const [nextChampion, setNextChampion] = useState<string | null>(null);
   const [isClosing, setIsClosing] = useState(false);
   const [isHoveringScrollContainer, setIsHoveringScrollContainer] = useState(false);
+  const [items, setItems] = useState<ItemMap | null>(null);
+  const [version, setVersion] = useState<string | null>(null);
+
+  const { inventory, trinket, slotCount, addItem: handleBuyItem, removeItem, removeTrinket, increaseSlots, decreaseSlots } = useInventory();
+
+  useEffect(() => {
+    const loadItems = async () => {
+      try {
+        const versionRes = await fetch('https://ddragon.leagueoflegends.com/api/versions.json');
+        const versions = await versionRes.json();
+        const latestVersion = versions[0];
+        setVersion(latestVersion);
+  
+        const itemsRes = await fetch(
+          `https://ddragon.leagueoflegends.com/cdn/${latestVersion}/data/en_US/item.json`
+        );
+        const itemsData = await itemsRes.json();
+  
+        const rawItems: Record<string, ItemData> = itemsData.data;
+        const itemMap: Record<string, ItemData> = {};
+  
+        Object.entries(rawItems).forEach(([id, item]) => {
+          itemMap[id] = { ...item, id };
+        });
+  
+        setItems(itemMap);
+      } catch (error) {
+        console.error('Failed to load items:', error);
+      }
+    };
+  
+    loadItems();
+  }, []);
   useEffect(() => {
     fetch('https://ddragon.leagueoflegends.com/api/versions.json')
       .then(res => res.json())
@@ -87,7 +123,7 @@ const LeagueOfLegendsPage: React.FC = () => {
   const gridFlex = currentChampion ? '65%' : '100%';
   const panelFlex = '35%';
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  
+
   const handleWheelHorizontalScroll = (e: React.WheelEvent) => {
     if (!scrollContainerRef.current) return;
 
@@ -109,26 +145,26 @@ const LeagueOfLegendsPage: React.FC = () => {
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
-  
+
     const handleWheel = (e: WheelEvent) => {
-      if (!isHoveringScrollContainer) return; 
-  
+      if (!isHoveringScrollContainer) return;
+
       const { deltaX, deltaY } = e;
       const isVerticalScroll = Math.abs(deltaY) > Math.abs(deltaX);
-  
+
       if (isVerticalScroll) {
         e.preventDefault();
         container.scrollLeft += deltaY;
       }
     };
-  
+
     container.addEventListener('wheel', handleWheel, { passive: false });
-  
+
     return () => {
       container.removeEventListener('wheel', handleWheel);
     };
   }, [isHoveringScrollContainer]);
-  
+
 
   const CARD_WIDTH = 225;
   const CARD_HEIGHT = 150;
@@ -199,24 +235,24 @@ const LeagueOfLegendsPage: React.FC = () => {
           ))}
         </div>
         <div
-  key={`${selectedRegion}-${selectedLane}`}
-  ref={scrollContainerRef}
-  onMouseEnter={() => setIsHoveringScrollContainer(true)}
-  onMouseLeave={() => setIsHoveringScrollContainer(false)}
-  style={{
-    display: 'grid',
-    gridAutoFlow: 'column',
-    gridTemplateRows: `repeat(3, ${CARD_HEIGHT}px)`,
-    gridAutoColumns: `${CARD_WIDTH}px`,
-    gap: '1rem',
-    overflowX: 'auto',
-    overflowY: 'hidden',
-    paddingBottom: '1rem',
-    scrollBehavior: 'smooth',
-    flexGrow: 1,
-    minHeight: 0,
-  }}
->
+          key={`${selectedRegion}-${selectedLane}`}
+          ref={scrollContainerRef}
+          onMouseEnter={() => setIsHoveringScrollContainer(true)}
+          onMouseLeave={() => setIsHoveringScrollContainer(false)}
+          style={{
+            display: 'grid',
+            gridAutoFlow: 'column',
+            gridTemplateRows: `repeat(3, ${CARD_HEIGHT}px)`,
+            gridAutoColumns: `${CARD_WIDTH}px`,
+            gap: '1rem',
+            overflowX: 'auto',
+            overflowY: 'hidden',
+            paddingBottom: '1rem',
+            scrollBehavior: 'smooth',
+            flexGrow: 1,
+            minHeight: 0,
+          }}
+        >
           {visibleChamps.map((champ, idx) => (
             <div
               key={champ.id}
@@ -268,22 +304,21 @@ const LeagueOfLegendsPage: React.FC = () => {
           ))}
         </div>
 
- 
+
       </div>
 
-      {currentChampion && (
-        <div style={{
-          flex: `0 0 ${panelFlex}`,
-          marginLeft: '1rem',
-          overflowY: 'auto'
-        }}>
-          <ChampionStatsPage
-            championId={currentChampion}
-            onClose={handlePanelClose}
-            isClosing={isClosing}
-          />
-        </div>
-      )}
+      {currentChampion && items && version && (
+      <div style={{ flex: `0 0 ${panelFlex}`, marginLeft: '1rem', overflowY: 'auto' }}>
+        <ChampionStatsPage
+          championId={currentChampion}
+          onClose={handlePanelClose}
+          isClosing={isClosing}
+          items={Object.values(items)} 
+          trinket={trinket ? trinket.item : null}
+          version={version}
+        />
+      </div>
+    )}
     </div>
   );
 };

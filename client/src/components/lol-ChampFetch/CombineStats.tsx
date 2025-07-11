@@ -8,7 +8,7 @@ import { calculateLevelStat, calculateAttackSpeed } from '../../utils/champUtils
 import type { ChampionDetail } from '../../constants/champData';
 import ChampionAbilities from './ChampAbilites';
 // import {KitingGame} from '../Game/KitingGame';
-import {KitingGame} from '../KitingGame/GameLoop/KitingGame'
+import { KitingGame } from '../KitingGame/GameLoop/KitingGame'
 interface CombinedStatsProps {
   items?: { item: ItemData; img: string }[];
   trinket?: { item: ItemData; img: string } | null;
@@ -18,76 +18,64 @@ interface CombinedStatsProps {
 function getStatName(statKey: string): string {
   return statNameMap[statKey] || statKey.replace(/([A-Z])/g, ' $1').replace(/^./, (s) => s.toUpperCase());
 }
-
+interface CombinedStatsProps {
+  championId: string;
+  items?: { item: ItemData; img: string }[];
+  trinket?: { item: ItemData; img: string } | null;
+  version?: string | null;
+}
 const renameMap: Record<string, string> = {
-    hp: 'health',
-    mp: 'mana',
-    hpregen: 'healthRegen',      
-    mpregen: 'manaRegen',     
-    armor: 'armor',
-    spellblock: 'magicResist',
-    attackdamage: 'attackDamage',
-    attackspeed: 'attackSpeed',
-    movespeed: 'moveSpeed',     
-    crit: 'critChance',         
-  }
-  
+  hp: 'health',
+  mp: 'mana',
+  hpregen: 'healthRegen',
+  mpregen: 'manaRegen',
+  armor: 'armor',
+  spellblock: 'magicResist',
+  attackdamage: 'attackDamage',
+  attackspeed: 'attackSpeed',
+  movespeed: 'moveSpeed',
+  crit: 'critChance',
+}
 
-  function renameStatKey(key: string): string {
-    return renameMap[key] || key;
-  }
 
-export default function CombinedStats({ items, trinket, version }: CombinedStatsProps) {
-  const [championList, setChampionList] = useState<Record<string, string>>({});
-  const [selectedChamp, setSelectedChamp] = useState('Aatrox');
+function renameStatKey(key: string): string {
+  return renameMap[key] || key;
+}
+
+export default function CombinedStats({ championId, items, trinket, version }: CombinedStatsProps) {
+  const [selectedChamp, setSelectedChamp] = useState(championId);
   const [selectedLevel, setSelectedLevel] = useState(1);
   const [championData, setChampionData] = useState<ChampionDetail | null>(null);
   const [loading, setLoading] = useState(false);
 
   const combinedItemStats = React.useMemo(() => {
     const totalStats: Record<string, number> = {};
-  
+
     if (items) {
       for (const { item } of items) {
         if (!item.description) continue;
         const stats = parseItemDescription(item.description);
         for (const [key, value] of Object.entries(stats)) {
-          const renamedKey = renameStatKey(key); 
+          const renamedKey = renameStatKey(key);
           totalStats[renamedKey] = (totalStats[renamedKey] || 0) + value;
         }
       }
     }
-  
+
     if (trinket?.item?.description) {
       const trinketStats = parseItemDescription(trinket.item.description);
       for (const [key, value] of Object.entries(trinketStats)) {
-        const renamedKey = renameStatKey(key); 
+        const renamedKey = renameStatKey(key);
         totalStats[renamedKey] = (totalStats[renamedKey] || 0) + value;
       }
     }
-  
+
     return totalStats;
   }, [items, trinket]);
-  
 
   useEffect(() => {
-    async function fetchChampionList() {
-      try {
-        const res = await fetch(
-          'https://ddragon.leagueoflegends.com/cdn/13.24.1/data/en_US/champion.json'
-        );
-        const data = await res.json();
-        const champMap: Record<string, string> = {};
-        Object.keys(data.data).forEach((key) => {
-          champMap[key] = data.data[key].name;
-        });
-        setChampionList(champMap);
-      } catch (err) {
-        console.error('Failed to fetch champion list', err);
-      }
-    }
-    fetchChampionList();
-  }, []);
+    setSelectedChamp(championId);
+  }, [championId]);
 
   useEffect(() => {
     async function fetchChampionDetail() {
@@ -137,20 +125,6 @@ export default function CombinedStats({ items, trinket, version }: CombinedStats
     <div>
       <h2>Champion and Inventory Combined Stats</h2>
 
-      {Object.keys(championList).length > 0 && (
-        <div style={{ marginBottom: '1em' }}>
-          <ChampionSelector
-            championList={championList}
-            selectedChampion={selectedChamp}
-            onChange={setSelectedChamp}
-          />
-          <LevelSelector
-            selectedLevel={selectedLevel}
-            onChange={setSelectedLevel}
-          />
-        </div>
-      )}
-
       {loading && <p>Loading champion data...</p>}
 
       {!loading && championData && (
@@ -176,11 +150,11 @@ export default function CombinedStats({ items, trinket, version }: CombinedStats
         <ChampionAbilities championData={championData} version={version} />
       )}
 
-      {combinedStats && Object.keys(combinedStats).length > 0 ? (
-        <KitingGame stats={combinedStats} itemStats={combinedItemStats} items={items || []} trinket={trinket}/>
+      {/* {combinedStats && Object.keys(combinedStats).length > 0 ? (
+        <KitingGame stats={combinedStats} itemStats={combinedItemStats} items={items || []} trinket={trinket} />
       ) : (
         <p>Loading stats...</p>
-      )}
+      )} */}
     </div>
   );
 }

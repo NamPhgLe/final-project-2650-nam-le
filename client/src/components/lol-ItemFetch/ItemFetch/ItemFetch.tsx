@@ -22,7 +22,7 @@ export default function ItemFetcher() {
   const [selectedSort, setSelectedSort] = useState<string>('gold');
   const [selectedStats, setSelectedStats] = useState<string[]>(['gold']);
   const [searchTerm, setSearchTerm] = useState<string>('');
-  
+   
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
 
