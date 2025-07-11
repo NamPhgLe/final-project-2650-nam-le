@@ -9,7 +9,9 @@ import type { ChampionDetail } from '../../constants/champData';
 import ChampionAbilities from './ChampAbilites';
 // import {KitingGame} from '../Game/KitingGame';
 import { KitingGame } from '../KitingGame/GameLoop/KitingGame'
+
 interface CombinedStatsProps {
+  level: number;
   items?: { item: ItemData; img: string }[];
   trinket?: { item: ItemData; img: string } | null;
   version?: string | null;
@@ -79,7 +81,7 @@ export default function CombinedStats({ championId, items, trinket, version }: C
 
   useEffect(() => {
     async function fetchChampionDetail() {
-      if (!version) return; // Guard clause
+      if (!version) return; 
       setLoading(true);
       try {
         const res = await fetch(
@@ -124,28 +126,36 @@ export default function CombinedStats({ championId, items, trinket, version }: C
 
   return (
     <div>
-      <h2>Champion and Inventory Combined Stats</h2>
 
       {loading && <p>Loading champion data...</p>}
 
       {!loading && championData && (
-        <>
-          <h3>{championData.name} — {championData.title} (Level {selectedLevel})</h3>
-          <ul>
-            {Object.entries(combinedStats).map(([statKey, value]) => (
-              <li key={statKey}>
-                <strong>{getStatName(statKey)}:</strong> {value.toFixed(2)}
-                {baseStats[statKey] !== undefined && combinedItemStats[statKey] !== undefined && (
-                  <span style={{ fontSize: '0.9em', color: '#666' }}>
-                    {' '}
-                    (Base: {baseStats[statKey].toFixed(2)} + Items: {combinedItemStats[statKey].toFixed(2)})
-                  </span>
-                )}
-              </li>
-            ))}
-          </ul>
-        </>
-      )}
+  <>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+      <h3>{championData.name} — {championData.title}</h3>
+      <LevelSelector
+        selectedLevel={selectedLevel}
+        onChange={(newLevel) => setSelectedLevel(newLevel)}
+        minLevel={1}
+        maxLevel={18}
+      />
+    </div>
+    
+    <ul>
+      {Object.entries(combinedStats).map(([statKey, value]) => (
+        <li key={statKey}>
+          <strong>{getStatName(statKey)}:</strong> {value.toFixed(2)}
+          {baseStats[statKey] !== undefined && combinedItemStats[statKey] !== undefined && (
+            <span style={{ fontSize: '0.9em', color: '#666' }}>
+              {' '}
+              (Base: {baseStats[statKey].toFixed(2)} + Items: {combinedItemStats[statKey].toFixed(2)})
+            </span>
+          )}
+        </li>
+      ))}
+    </ul>
+  </>
+)}
 
       {championData && version && (
         <ChampionAbilities championData={championData} version={version} />

@@ -29,6 +29,7 @@ const LeagueOfLegendsPage: React.FC = () => {
   const [isHoveringScrollContainer, setIsHoveringScrollContainer] = useState(false);
   const [items, setItems] = useState<ItemMap | null>(null);
   const [version, setVersion] = useState<string | null>(null);
+  const [level, setLevel] = useState<number>(1);
 
   const { inventory, trinket, slotCount, addItem: handleBuyItem, removeItem, removeTrinket, increaseSlots, decreaseSlots } = useInventory();
 
@@ -120,28 +121,10 @@ const LeagueOfLegendsPage: React.FC = () => {
     }
   };
 
-  const gridFlex = currentChampion ? '65%' : '100%';
   const panelFlex = '35%';
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  const handleWheelHorizontalScroll = (e: React.WheelEvent) => {
-    if (!scrollContainerRef.current) return;
 
-    const container = scrollContainerRef.current;
-    const { deltaX, deltaY } = e;
-
-    const canScrollLeft = container.scrollLeft > 0;
-    const canScrollRight = container.scrollLeft + container.clientWidth < container.scrollWidth;
-
-    const isVerticalScroll = Math.abs(deltaY) > Math.abs(deltaX);
-
-    if (isVerticalScroll) {
-      if ((deltaY < 0 && canScrollLeft) || (deltaY > 0 && canScrollRight)) {
-        e.preventDefault();
-        container.scrollLeft += deltaY;
-      }
-    }
-  };
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
@@ -313,9 +296,10 @@ const LeagueOfLegendsPage: React.FC = () => {
           championId={currentChampion}
           onClose={handlePanelClose}
           isClosing={isClosing}
-          items={Object.values(items)} 
+          items={inventory.map(({ item }) => item)} 
           trinket={trinket ? trinket.item : null}
           version={version}
+          level={level}
         />
       </div>
     )}

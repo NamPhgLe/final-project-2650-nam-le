@@ -1,0 +1,54 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 1000;
+  }
+  
+  .overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  .panel {
+    position: fixed;
+    top: 0;
+    right: -400px; /* Hidden initially */
+    width: 400px;
+    height: 100%;
+    background: white;
+    box-shadow: -4px 0 8px rgba(0,0,0,0.2);
+    transition: right 0.3s ease;
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .panel.open {
+    right: 0;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .header button {
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .content {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 1rem;
+  }
+  

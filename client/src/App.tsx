@@ -13,21 +13,21 @@ const LeagueOfLegendsPage = lazy(() =>
   import('./components/Pages/Content/LeagueOfLegendsPage')
 );
 
-
 function App() {
   return (
     <>
       <NavBar />
       <Suspense fallback={<div>Loading...</div>}>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginForm />} />
-          <Route path="/signup" element={<SignupForm />} />
-          <Route path="/league" element={<LeagueOfLegendsPage />} />
-        </Routes>
+          <Routes>
+            <Route index element={<HomePage />} />
+            <Route path="signup" element={<SignupForm />} />
+            <Route path="login" element={<LoginForm />} />
+            <Route path="/league" element={<LeagueOfLegendsPage />} />
+          </Routes>
       </Suspense>
     </>
   );
 }
+
 
 export default App;

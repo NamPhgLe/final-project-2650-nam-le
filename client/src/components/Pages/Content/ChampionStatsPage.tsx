@@ -5,6 +5,7 @@ import type { ItemData } from '../../../constants/itemData';
 import useLatestVersion from '../../../hooks/useLatestVersion';
 interface ChampionStatsPageProps {
   championId: string;
+  level: number;
   onClose: () => void;
   isClosing: boolean;
   items: ItemData[];
@@ -14,12 +15,13 @@ interface ChampionStatsPageProps {
 
 const ChampionStatsPage: React.FC<ChampionStatsPageProps> = ({
   championId,
+  level,
   onClose,
   isClosing,
   items,
   trinket,
 }) => {
-  const version = useLatestVersion(); // dynamically fetched
+  const version = useLatestVersion();
 
   useEffect(() => {
     if (!isClosing) return;
@@ -31,13 +33,9 @@ const ChampionStatsPage: React.FC<ChampionStatsPageProps> = ({
 
   return (
     <div className={`${styles.panel} ${isClosing ? styles.exit : ''}`}>
-      <button className={styles.closeButton} onClick={onClose} aria-label="Close champion stats">
-        ×
-      </button>
-
-      <h2 className={styles.title}>Stats for {championId}</h2>
       <CombinedStats
         championId={championId}
+        level={level} 
         items={items.map(item => ({
           item,
           img: `https://ddragon.leagueoflegends.com/cdn/${version}/img/item/${item.id}.png`,
@@ -45,13 +43,13 @@ const ChampionStatsPage: React.FC<ChampionStatsPageProps> = ({
         trinket={
           trinket
             ? {
-                item: trinket,
-                img: `https://ddragon.leagueoflegends.com/cdn/${version}/img/item/${trinket.id}.png`,
-              }
+              item: trinket,
+              img: `https://ddragon.leagueoflegends.com/cdn/${version}/img/item/${trinket.id}.png`,
+            }
             : null
         }
         version={version}
-      />
+        />
     </div>
   );
 };
