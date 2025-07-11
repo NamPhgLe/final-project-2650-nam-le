@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import championMetaRaw from '../../../data/champion_metadata.json';
 type RawMeta = Record<string, { region: string; lane: string }>;
 import styles from './LeaugeOfLegendsPage.module.css';
@@ -23,7 +23,7 @@ const LeagueOfLegendsPage: React.FC = () => {
   const [currentChampion, setCurrentChampion] = useState<string | null>(null);
   const [nextChampion, setNextChampion] = useState<string | null>(null);
   const [isClosing, setIsClosing] = useState(false);
-
+  const [isHoveringScrollContainer, setIsHoveringScrollContainer] = useState(false);
   useEffect(() => {
     fetch('https://ddragon.leagueoflegends.com/api/versions.json')
       .then(res => res.json())
@@ -37,19 +37,19 @@ const LeagueOfLegendsPage: React.FC = () => {
       .then(res => res.json())
       .then((data: any) => {
         const list: ChampionData[] = Object.keys(data.data)
-        .map(key => {
-          const meta = championMetaMap[key];
-          if (!meta || meta.lane === 'Unknown') {
-            console.log(`Filtered out: ${key}`, meta);
-            return null;
-          }
-          return {
-            id: key,
-            region: meta.region,
-            lane: meta.lane
-          };
-        })
-        .filter((c): c is ChampionData => c !== null);
+          .map(key => {
+            const meta = championMetaMap[key];
+            if (!meta || meta.lane === 'Unknown') {
+              console.log(`Filtered out: ${key}`, meta);
+              return null;
+            }
+            return {
+              id: key,
+              region: meta.region,
+              lane: meta.lane
+            };
+          })
+          .filter((c): c is ChampionData => c !== null);
         setChampions(list);
       })
       .catch(console.error);
@@ -86,7 +86,54 @@ const LeagueOfLegendsPage: React.FC = () => {
 
   const gridFlex = currentChampion ? '65%' : '100%';
   const panelFlex = '35%';
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  
+  const handleWheelHorizontalScroll = (e: React.WheelEvent) => {
+    if (!scrollContainerRef.current) return;
 
+    const container = scrollContainerRef.current;
+    const { deltaX, deltaY } = e;
+
+    const canScrollLeft = container.scrollLeft > 0;
+    const canScrollRight = container.scrollLeft + container.clientWidth < container.scrollWidth;
+
+    const isVerticalScroll = Math.abs(deltaY) > Math.abs(deltaX);
+
+    if (isVerticalScroll) {
+      if ((deltaY < 0 && canScrollLeft) || (deltaY > 0 && canScrollRight)) {
+        e.preventDefault();
+        container.scrollLeft += deltaY;
+      }
+    }
+  };
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+  
+    const handleWheel = (e: WheelEvent) => {
+      if (!isHoveringScrollContainer) return; 
+  
+      const { deltaX, deltaY } = e;
+      const isVerticalScroll = Math.abs(deltaY) > Math.abs(deltaX);
+  
+      if (isVerticalScroll) {
+        e.preventDefault();
+        container.scrollLeft += deltaY;
+      }
+    };
+  
+    container.addEventListener('wheel', handleWheel, { passive: false });
+  
+    return () => {
+      container.removeEventListener('wheel', handleWheel);
+    };
+  }, [isHoveringScrollContainer]);
+  
+
+  const CARD_WIDTH = 225;
+  const CARD_HEIGHT = 150;
+
+  const IMAGE_RATIO = 0.56;
   return (
     <div style={{
       display: 'flex', height: '100vh',
@@ -95,17 +142,15 @@ const LeagueOfLegendsPage: React.FC = () => {
     }}>
       <div
         style={{
-          flex: `0 0 ${gridFlex}`,
+          flex: `1`,
           transition: 'flex-basis 0.3s ease',
-          overflowY: 'auto'
+          overflowY: 'hidden',
         }}
       >
         <h1 style={{ fontFamily: 'Cinzel, serif', marginBottom: '1rem' }}>
           League of Legends Simulator
         </h1>
-        <p style={{ marginBottom: '1rem' }}>
-          Region Filter:
-        </p>
+
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1.5rem' }}>
           {regions.map(r => (
             <button
@@ -153,39 +198,77 @@ const LeagueOfLegendsPage: React.FC = () => {
             </button>
           ))}
         </div>
-
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-          gap: '1.5rem'
-        }}>
+        <div
+  key={`${selectedRegion}-${selectedLane}`}
+  ref={scrollContainerRef}
+  onMouseEnter={() => setIsHoveringScrollContainer(true)}
+  onMouseLeave={() => setIsHoveringScrollContainer(false)}
+  style={{
+    display: 'grid',
+    gridAutoFlow: 'column',
+    gridTemplateRows: `repeat(3, ${CARD_HEIGHT}px)`,
+    gridAutoColumns: `${CARD_WIDTH}px`,
+    gap: '1rem',
+    overflowX: 'auto',
+    overflowY: 'hidden',
+    paddingBottom: '1rem',
+    scrollBehavior: 'smooth',
+    flexGrow: 1,
+    minHeight: 0,
+  }}
+>
           {visibleChamps.map((champ, idx) => (
             <div
               key={champ.id}
               className={`${styles.slideInCard} ${styles.championCard}`}
-              style={{ animationDelay: `${idx * 100}ms` }}
+              style={{
+                animationDelay: `${idx * 100}ms`,
+                width: `${CARD_WIDTH}px`,
+                cursor: 'pointer',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                height: `${CARD_HEIGHT}px`,
+              }}
               onClick={() => openChampionStats(champ.id)}
             >
-              <div style={{ position: 'relative', width: '100%', paddingTop: '56.25%' }}>
+              <div style={{ position: 'relative', width: '100%', paddingTop: `${IMAGE_RATIO * 100}%` }}>
                 <img
                   src={splashUrl(champ.id)}
                   alt={`${champ.id} splash art`}
-                  style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    borderRadius: '8px',
+                  }}
                 />
               </div>
-              <div style={{
-                padding: '0.75rem',
-                textAlign: 'center',
-                fontWeight: 600,
-                fontSize: '1rem',
-                color: '#000',
-                userSelect: 'none'
-              }}>
+              <div
+                style={{
+                  padding: '0.3rem 0',
+                  textAlign: 'center',
+                  fontWeight: 600,
+                  fontSize: '0.85rem',
+                  color: '#000',
+                  userSelect: 'none',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  flexShrink: 0,
+                }}
+                title={champ.id}
+              >
                 {champ.id}
               </div>
             </div>
           ))}
         </div>
+
+ 
       </div>
 
       {currentChampion && (

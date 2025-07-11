@@ -82,3 +82,28 @@
   transform: scale(1.05);
   box-shadow: 0 8px 16px rgba(0,0,0,0.3);
 }
+.scrollContainer {
+  display: flex;
+  overflow-x: auto;
+  gap: 1.5rem;
+  padding-bottom: 1rem;
+  scrollbar-width: thin;
+}
+
+.scrollContainer::-webkit-scrollbar {
+  height: 6px;
+}
+
+.scrollContainer::-webkit-scrollbar-thumb {
+  background: #c00000;
+  border-radius: 3px;
+}
+
+.scrollContainer::-webkit-scrollbar {
+  height: 6px;
+}
+
+.scrollContainer::-webkit-scrollbar-thumb {
+  background-color: #c00000;
+  border-radius: 3px;
+}
