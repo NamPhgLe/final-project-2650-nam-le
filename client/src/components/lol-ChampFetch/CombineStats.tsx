@@ -79,10 +79,11 @@ export default function CombinedStats({ championId, items, trinket, version }: C
 
   useEffect(() => {
     async function fetchChampionDetail() {
+      if (!version) return; // Guard clause
       setLoading(true);
       try {
         const res = await fetch(
-          `https://ddragon.leagueoflegends.com/cdn/13.24.1/data/en_US/champion/${selectedChamp}.json`
+          `https://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/champion/${selectedChamp}.json`
         );
         const data = await res.json();
         setChampionData(data.data[selectedChamp]);
@@ -93,7 +94,7 @@ export default function CombinedStats({ championId, items, trinket, version }: C
       }
     }
     if (selectedChamp) fetchChampionDetail();
-  }, [selectedChamp]);
+  }, [selectedChamp, version]);
 
   const baseStats: Record<string, number> = {};
   if (championData) {
