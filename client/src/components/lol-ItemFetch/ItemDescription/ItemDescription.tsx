@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import ItemStats from '../ItemStats/ItemStats';
-import styles from './ItemDescription.module.css';
+import styles from '../itemStats.module.css';
 import type { ItemData } from '../../../constants/itemData';
 
 
@@ -90,7 +90,7 @@ export default function ItemDescription({
 
     return (
         <div className={styles.detailsRow}>
-            <div className={styles.statsColumn}>
+            <div>
                 <div className={styles.itemStatsWrapper}>
                     <ItemStats
                         item={item}
