@@ -5,7 +5,7 @@ import styles from './LeaugeOfLegendsPage.module.css';
 import ChampionStatsPage from './ChampionStatsPage';
 import { useInventory } from '../../../hooks/useInventory';
 import type { ItemData } from '../../../constants/itemData';
-
+import InventoryPage from './InventoryPage';
 type ItemMap = Record<string, ItemData>;
 
 const championMetaMap = championMetaRaw as unknown as RawMeta;
@@ -30,6 +30,7 @@ const LeagueOfLegendsPage: React.FC = () => {
   const [items, setItems] = useState<ItemMap | null>(null);
   const [version, setVersion] = useState<string | null>(null);
   const [level, setLevel] = useState<number>(1);
+  const [showInventory, setShowInventory] = useState(false);
 
   const { inventory, trinket, slotCount, addItem: handleBuyItem, removeItem, removeTrinket, increaseSlots, decreaseSlots } = useInventory();
 
@@ -40,25 +41,25 @@ const LeagueOfLegendsPage: React.FC = () => {
         const versions = await versionRes.json();
         const latestVersion = versions[0];
         setVersion(latestVersion);
-  
+
         const itemsRes = await fetch(
           `https://ddragon.leagueoflegends.com/cdn/${latestVersion}/data/en_US/item.json`
         );
         const itemsData = await itemsRes.json();
-  
+
         const rawItems: Record<string, ItemData> = itemsData.data;
         const itemMap: Record<string, ItemData> = {};
-  
+
         Object.entries(rawItems).forEach(([id, item]) => {
           itemMap[id] = { ...item, id };
         });
-  
+
         setItems(itemMap);
       } catch (error) {
         console.error('Failed to load items:', error);
       }
     };
-  
+
     loadItems();
   }, []);
   useEffect(() => {
@@ -154,156 +155,176 @@ const LeagueOfLegendsPage: React.FC = () => {
 
   const IMAGE_RATIO = 0.56;
   return (
-    <div style={{
-      display: 'flex', height: '100vh',
-      padding: '2rem', boxSizing: 'border-box',
-      fontFamily: 'Inter, sans-serif'
-    }}>
+    <>
       <div
-        style={{
-          flex: `1`,
-          transition: 'flex-basis 0.3s ease',
-          overflowY: 'hidden',
-        }}
+        className={`${styles.leagueContainer} ${showInventory ? styles.slideUpOut : styles.slideReset
+          }`}
       >
-        <h1 style={{ fontFamily: 'Cinzel, serif', marginBottom: '1rem' }}>
-          League of Legends Simulator
-        </h1>
-
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1.5rem' }}>
-          {regions.map(r => (
-            <button
-              key={r}
-              onClick={() => setSelectedRegion(r)}
-              className={styles.slideInText}
-              style={{
-                animationDelay: '0ms',
-                padding: '0.5rem 1rem',
-                fontWeight: 600,
-                borderRadius: 20,
-                border: 'none',
-                cursor: 'pointer',
-                backgroundColor: r === selectedRegion ? '#c00000' : '#e0e0e0',
-                color: r === selectedRegion ? '#fff' : '#000',
-                transition: 'all 0.2s'
-              }}
-            >{r}</button>
-          ))}
-        </div>
 
         <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          marginBottom: '2rem',
-          padding: '0 0.5rem',
-          borderBottom: '2px solid #ddd'
+          display: 'flex', height: '100vh',
+          padding: '2rem', boxSizing: 'border-box',
+          fontFamily: 'Inter, sans-serif'
         }}>
-          {LANES.filter(l => l !== 'All').map(lane => (
-            <button
-              key={lane}
-              onClick={() => setSelectedLane(lane)}
-              style={{
-                background: 'none',
-                border: 'none',
-                padding: '0.5rem 1rem',
-                fontWeight: lane === selectedLane ? 700 : 400,
-                color: lane === selectedLane ? '#c00000' : '#555',
-                cursor: 'pointer',
-                borderBottom: lane === selectedLane ? '3px solid #c00000' : '3px solid transparent',
-                transition: 'all 0.2s'
-              }}
-            >
-              {lane}
-            </button>
-          ))}
-        </div>
-        <div
-          key={`${selectedRegion}-${selectedLane}`}
-          ref={scrollContainerRef}
-          onMouseEnter={() => setIsHoveringScrollContainer(true)}
-          onMouseLeave={() => setIsHoveringScrollContainer(false)}
-          style={{
-            display: 'grid',
-            gridAutoFlow: 'column',
-            gridTemplateRows: `repeat(3, ${CARD_HEIGHT}px)`,
-            gridAutoColumns: `${CARD_WIDTH}px`,
-            gap: '1rem',
-            overflowX: 'auto',
-            overflowY: 'hidden',
-            paddingBottom: '1rem',
-            scrollBehavior: 'smooth',
-            flexGrow: 1,
-            minHeight: 0,
-          }}
-        >
-          {visibleChamps.map((champ, idx) => (
-            <div
-              key={champ.id}
-              className={`${styles.slideInCard} ${styles.championCard}`}
-              style={{
-                animationDelay: `${idx * 100}ms`,
-                width: `${CARD_WIDTH}px`,
-                cursor: 'pointer',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                height: `${CARD_HEIGHT}px`,
-              }}
-              onClick={() => openChampionStats(champ.id)}
-            >
-              <div style={{ position: 'relative', width: '100%', paddingTop: `${IMAGE_RATIO * 100}%` }}>
-                <img
-                  src={splashUrl(champ.id)}
-                  alt={`${champ.id} splash art`}
+          <div
+            style={{
+              flex: `1`,
+              transition: 'flex-basis 0.3s ease',
+              overflowY: 'hidden',
+            }}
+          >
+
+            <h1 style={{ fontFamily: 'Cinzel, serif', marginBottom: '1rem' }}>
+              League of Legends - Read About Champions
+            </h1>
+
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1.5rem' }}>
+              {regions.map(r => (
+                <button
+                  key={r}
+                  onClick={() => setSelectedRegion(r)}
+                  className={styles.slideInText}
                   style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    borderRadius: '8px',
+                    animationDelay: '0ms',
+                    padding: '0.5rem 1rem',
+                    fontWeight: 600,
+                    borderRadius: 20,
+                    border: 'none',
+                    cursor: 'pointer',
+                    backgroundColor: r === selectedRegion ? '#c00000' : '#e0e0e0',
+                    color: r === selectedRegion ? '#fff' : '#000',
+                    transition: 'all 0.2s'
                   }}
-                />
-              </div>
-              <div
-                style={{
-                  padding: '0.3rem 0',
-                  textAlign: 'center',
-                  fontWeight: 600,
-                  fontSize: '0.85rem',
-                  color: '#000',
-                  userSelect: 'none',
-                  whiteSpace: 'nowrap',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  flexShrink: 0,
-                }}
-                title={champ.id}
-              >
-                {champ.id}
-              </div>
+                >{r}</button>
+              ))}
             </div>
-          ))}
+
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              marginBottom: '2rem',
+              padding: '0 0.5rem',
+              borderBottom: '2px solid #ddd'
+            }}>
+              {LANES.filter(l => l !== 'All').map(lane => (
+                <button
+                  key={lane}
+                  onClick={() => setSelectedLane(lane)}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    padding: '0.5rem 1rem',
+                    fontWeight: lane === selectedLane ? 700 : 400,
+                    color: lane === selectedLane ? '#c00000' : '#555',
+                    cursor: 'pointer',
+                    borderBottom: lane === selectedLane ? '3px solid #c00000' : '3px solid transparent',
+                    transition: 'all 0.2s'
+                  }}
+                >
+                  {lane}
+                </button>
+              ))}
+            </div>
+            <div
+              key={`${selectedRegion}-${selectedLane}`}
+              ref={scrollContainerRef}
+              onMouseEnter={() => setIsHoveringScrollContainer(true)}
+              onMouseLeave={() => setIsHoveringScrollContainer(false)}
+              style={{
+                display: 'grid',
+                gridAutoFlow: 'column',
+                gridTemplateRows: `repeat(3, ${CARD_HEIGHT}px)`,
+                gridAutoColumns: `${CARD_WIDTH}px`,
+                gap: '1rem',
+                overflowX: 'auto',
+                overflowY: 'hidden',
+                paddingBottom: '1rem',
+                scrollBehavior: 'smooth',
+                flexGrow: 1,
+                minHeight: 0,
+              }}
+            >
+              {visibleChamps.map((champ, idx) => (
+                <div
+                  key={champ.id}
+                  className={`${styles.slideInCard} ${styles.championCard}`}
+                  style={{
+                    animationDelay: `${idx * 100}ms`,
+                    width: `${CARD_WIDTH}px`,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    height: `${CARD_HEIGHT}px`,
+                  }}
+                  onClick={() => openChampionStats(champ.id)}
+                >
+                  <div style={{ position: 'relative', width: '100%', paddingTop: `${IMAGE_RATIO * 100}%` }}>
+                    <img
+                      src={splashUrl(champ.id)}
+                      alt={`${champ.id} splash art`}
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        borderRadius: '8px',
+                      }}
+                    />
+                  </div>
+                  <div
+                    style={{
+                      padding: '0.3rem 0',
+                      textAlign: 'center',
+                      fontWeight: 600,
+                      fontSize: '0.85rem',
+                      color: '#000',
+                      userSelect: 'none',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      flexShrink: 0,
+                    }}
+                    title={champ.id}
+                  >
+                    {champ.id}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {currentChampion && items && version && (
+            <div style={{ flex: `0 0 ${panelFlex}`, marginLeft: '1rem', overflowY: 'auto' }}>
+              <ChampionStatsPage
+                championId={currentChampion}
+                onClose={handlePanelClose}
+                isClosing={isClosing}
+                items={inventory.map(({ item }) => item)}
+                trinket={trinket ? trinket.item : null}
+                level={level}
+              />
+            </div>
+          )}
         </div>
-
-
       </div>
 
-      {currentChampion && items && version && (
-      <div style={{ flex: `0 0 ${panelFlex}`, marginLeft: '1rem', overflowY: 'auto' }}>
-        <ChampionStatsPage
-          championId={currentChampion}
-          onClose={handlePanelClose}
-          isClosing={isClosing}
-          items={inventory.map(({ item }) => item)} 
-          trinket={trinket ? trinket.item : null}
-          version={version}
-          level={level}
-        />
+      <div
+        className={`${styles.inventoryContainer} ${showInventory ? styles.slideUpIn : styles.slideResetDown
+          }`}
+      >
+        <InventoryPage isOpen={true} onClose={() => setShowInventory(false)} />
       </div>
-    )}
-    </div>
+
+      <button
+        onClick={() => setShowInventory(prev => !prev)}
+        className={styles.toggleButton}
+      >
+        {showInventory ? 'Close Inventory' : 'Open Inventory'}
+      </button>
+    </>
   );
 };
 

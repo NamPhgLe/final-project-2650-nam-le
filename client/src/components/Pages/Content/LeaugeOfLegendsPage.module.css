@@ -107,3 +107,74 @@
   background-color: #c00000;
   border-radius: 3px;
 }
+.leagueContainer,
+.inventoryContainer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100vh;
+  will-change: transform;
+  transition: transform 0.3s ease-out;
+  overflow-y: auto;
+  z-index: 1;
+}
+
+.leagueContainer {
+  top: 0;
+  background-color: white;
+  z-index: 2;
+}
+
+.inventoryContainer {
+  top: 100vh; 
+  background-color: white;
+  z-index: 3;
+}
+
+.slideUpOut {
+  transform: translateY(-100vh);
+  transition-duration: 0.35s;
+  z-index: 1;
+}
+
+.slideUpIn {
+  transform: translateY(-100vh);
+  transition-duration: 0.35s;
+  z-index: 3;
+}
+
+.slideReset {
+  transform: translateY(0);
+  transition-duration: 0.35s;
+  z-index: 2;
+}
+
+.slideResetDown {
+  transform: translateY(0);
+  top: 100vh; 
+  transition-duration: 0.35s;
+  z-index: 1;
+}
+.toggleButton {
+  position: fixed;    
+  bottom: 20px;        
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  padding: 0.75rem 1.5rem;
+  font-weight: 700;
+  font-size: 1rem;
+  border: none;
+  border-radius: 30px;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(192, 0, 0, 0.6);
+  transition: all 0.35s ease;
+  background-color: #c00000;
+}
+
+
+.toggleButton:hover {
+  background-color: #a00000;
+}

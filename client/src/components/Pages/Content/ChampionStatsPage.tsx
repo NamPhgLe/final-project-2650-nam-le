@@ -10,7 +10,6 @@ interface ChampionStatsPageProps {
   isClosing: boolean;
   items: ItemData[];
   trinket: ItemData | null;
-  version: string;
 }
 
 const ChampionStatsPage: React.FC<ChampionStatsPageProps> = ({
@@ -33,6 +32,11 @@ const ChampionStatsPage: React.FC<ChampionStatsPageProps> = ({
 
   return (
     <div className={`${styles.panel} ${isClosing ? styles.exit : ''}`}>
+       <div className={styles.header}>
+        <button onClick={onClose} className={styles.closeButton} aria-label="Close">
+          ×
+        </button>
+      </div>
       <CombinedStats
         championId={championId}
         level={level} 

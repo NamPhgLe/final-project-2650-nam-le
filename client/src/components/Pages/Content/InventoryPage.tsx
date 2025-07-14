@@ -7,27 +7,12 @@ interface InventoryPageProps {
   onClose: () => void;
 }
 
-export default function InventoryPage({ isOpen, onClose }: InventoryPageProps) {
+const InventoryPage: React.FC<InventoryPageProps> = ({ isOpen, onClose }) => {
   return (
-    <>
-      {/* Overlay */}
-      <div
-        className={`${styles.overlay} ${isOpen ? styles.show : ''}`}
-        onClick={onClose}
-      />
-
-      {/* Sliding panel */}
-      <div className={`${styles.panel} ${isOpen ? styles.open : ''}`}>
-        <div className={styles.header}>
-          <h2>Inventory</h2>
-          <button onClick={onClose} aria-label="Close inventory">
-            ×
-          </button>
-        </div>
-        <div className={styles.content}>
-          <ItemFetcher />
-        </div>
-      </div>
-    </>
+    <div className={`${styles.inventoryPanel} ${isOpen ? styles.open : ''}`}>
+        <ItemFetcher />
+    </div>
   );
-}
+};
+
+export default InventoryPage;

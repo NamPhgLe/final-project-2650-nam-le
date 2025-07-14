@@ -1,9 +1,9 @@
 import React from 'react';
+import styles from './MapFilter.module.css';
 
 interface MapFilterProps {
-  items: Record<string, any>; 
+  items: Record<string, any>;
   version: string;
-  showText: boolean;
   selectedMap: string | null;
   onSelectMap: React.Dispatch<React.SetStateAction<string | null>>;
 }
@@ -16,11 +16,11 @@ export default function MapFilter({ selectedMap, onSelectMap }: MapFilterProps) 
   const allMaps = Object.keys(MAP_NAMES);
 
   return (
-    <div>
-      <h3>Select Map to Filter Items</h3>
-      <div className="mb-3">
+    <div className={styles.mapFilterContainer}>
+
+      <div className={styles.mapButtonGroup}>
         <button
-          className={`btn btn-sm btn-outline-secondary me-2 ${selectedMap === null ? 'active' : ''}`}
+          className={`${styles.mapButton} ${selectedMap === null ? styles.active : ''}`}
           onClick={() => onSelectMap(null)}
         >
           All Maps
@@ -28,7 +28,7 @@ export default function MapFilter({ selectedMap, onSelectMap }: MapFilterProps) 
         {allMaps.map((mapId) => (
           <button
             key={mapId}
-            className={`btn btn-sm btn-outline-primary me-2 ${selectedMap === mapId ? 'active' : ''}`}
+            className={`${styles.mapButton} ${selectedMap === mapId ? styles.active : ''}`}
             onClick={() => onSelectMap(mapId)}
           >
             {MAP_NAMES[mapId] ?? `Map ${mapId}`}

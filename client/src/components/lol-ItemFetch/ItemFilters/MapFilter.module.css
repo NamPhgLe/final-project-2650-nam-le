@@ -1,0 +1,41 @@
+.mapFilterContainer {
+    margin: 1rem 0 2rem;
+    padding: 0 1rem;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  .mapTitle {
+    font-size: 1.2rem;
+    font-weight: 700;
+    font-family: 'Cinzel', serif;
+    margin-bottom: 1rem;
+    color: #222;
+  }
+  
+  .mapButtonGroup {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .mapButton {
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    background-color: #e0e0e0;
+    color: #000;
+  }
+  
+  .mapButton:hover {
+    background-color: #d0d0d0;
+  }
+  
+  .active {
+    background-color: #c00000;
+    color: white;
+  }
+  

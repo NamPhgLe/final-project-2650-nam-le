@@ -1,11 +1,14 @@
 .container {
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
+  font-family: 'Inter', sans-serif;
 }
 
 .heading {
-  margin-bottom: 0.5rem;
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-family: 'Cinzel', serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #222;
 }
 
 .buttonsContainer {
@@ -15,30 +18,24 @@
 }
 
 .btn {
-  padding: 0.25rem 0.75rem;
-  font-size: 0.875rem;
-  border: 1px solid #0d6efd;
-  border-radius: 0.25rem;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border-radius: 20px;
+  border: none;
   cursor: pointer;
-  background-color: transparent;
-  color: #0d6efd;
-  transition: background-color 0.2s, color 0.2s;
-  user-select: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  background-color: #e0e0e0;
+  color: #000;
 }
 
-.btn:hover {
-  background-color: #0d6efd;
-  color: white;
-}
 
 .active {
-  background-color: #0d6efd;
-  color: white;
-  border-color: #0d6efd;
+  background-color: #c00000;
+  color: #fff;
 }
 
 .inactive {
-  background-color: transparent;
-  color: #0d6efd;
-  border-color: #0d6efd;
+  background-color: #e0e0e0;
+  color: #000;
 }

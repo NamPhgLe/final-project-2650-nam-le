@@ -4,12 +4,11 @@ import { statNameMap } from '../../../../constants/statNameMap';
 import { riotStatKeyMap } from '../../../../constants/riotStatNameMap';
 
 interface ItemStatsFilterProps {
-  availableStats: string[]; // e.g., ["FlatArmorMod", "FlatHPRegenMod"]
-  selectedStats: string[];  // still uses the original keys like "FlatArmorMod"
+  availableStats: string[];
+  selectedStats: string[];  
   onChange: (selected: string[]) => void;
 }
 
-// fallback formatter: camelCase → "Camel Case"
 const formatFallbackName = (key: string) =>
   key.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, s => s.toUpperCase());
 
@@ -24,12 +23,12 @@ const ItemStatsFilter: React.FC<ItemStatsFilterProps> = ({
 
   return (
     <div className={styles.container}>
-      <h3 className={styles.heading}>Filter by Stats:</h3>
+   
       <div className={styles.buttonsContainer}>
         {availableStats.map(originalKey => {
           const normalizedKey = riotStatKeyMap[originalKey] || originalKey;
           const label = statNameMap[normalizedKey] || formatFallbackName(normalizedKey);
-          const isSelected = selectedStats.includes(originalKey); // use original for state
+          const isSelected = selectedStats.includes(originalKey); 
 
           return (
             <button
