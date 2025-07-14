@@ -1,0 +1,190 @@
+.itemFetcherContainer {
+    padding: 2rem;
+    font-family: 'Inter', sans-serif;
+    color: #eee;
+    background-color: #ffffff;
+  }
+  
+  .mainContent {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+  
+  .detailsRow,
+  .itemsScrollContainer {
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    border-radius: 8px;
+    padding: 1rem;
+    resize: both;
+    overflow-y: auto;
+    max-height: 600px;
+    min-width: 142px;
+    min-height: 172px;
+    width: 800px;
+    max-width: 100%;
+  }
+  
+  .itemFetcherHeader,
+  .sectionHeader {
+    font-family: 'Cinzel', serif;
+    font-weight: bold;
+    font-size: 1.25rem;
+    color: #e0e0e0;
+    margin-bottom: 1rem;
+  }
+  
+  @keyframes slideInFromBottom {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  
+  .itemCard,
+  .buildsIntoCard {
+    opacity: 0;
+    animation: slideInFromBottom 0.4s forwards;
+    animation-delay: var(--delay, 0ms);
+  }
+  
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 2rem;
+  }
+  
+  .itemsScrollContainer {
+    width: 980px;
+    height: 720px;
+    max-width: 850px;
+  }
+  
+  .itemCard,
+  .buildsIntoCard {
+    color: #000;
+    background-color: #ffffff;
+    color: #fff;
+    border: 1px solid #000000;
+    border-radius: 8px;
+    padding: 0.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .itemCard:hover,
+  .buildsIntoCard:hover {
+    transform: scale(1.05);
+    border-color: #c00000;
+    box-shadow: 0 0 10px rgba(192, 0, 0, 0.4);
+  }
+  
+  .selected {
+    border: 2px solid #c00000;
+  }
+  
+  .itemCard.compact {
+    padding: 0.25rem;
+    min-height: 90px;
+  }
+  
+  .itemCard {
+    min-height: 150px;
+    font-size: 0.9rem;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  .itemImage {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    margin-bottom: 0.5rem;
+  }
+  
+  .buildsIntoCard .itemImage {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .itemName {
+    color: #000;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    text-align: center;
+    word-break: break-word;
+    max-width: 100%;
+    line-height: 1.2;
+  }
+  .statsColumn {
+    flex: 1;
+    min-width: 300px;
+  }
+  
+  .buildsIntoSection {
+    margin-top: 1rem;
+  }
+  
+  .buildsIntoGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .descriptionColumn {
+    flex: 1;
+    min-width: 300px;
+    background-color: #1a1a1a;
+    padding: 1rem;
+    border: 1px solid #000000;
+    border-radius: 0.5rem;
+    color: #ccc;
+  }
+  
+  .description {
+    line-height: 1.5;
+  }
+  
+  .plainText {
+    font-style: italic;
+    color: #999;
+  }
+  
+  .toggleButton,
+  .buyButton {
+    background-color: #c00000;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 0.5rem 1.5rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .toggleButton:hover,
+  .buyButton:hover {
+    background-color: #a00000;
+  }
+  
+  .loadingText {
+    color: #aaa;
+    font-style: italic;
+  }
+  
+  .itemsWrapper {
+    min-width: 120px;
+    min-height: 150px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+  
+  .noItemsText {
+    color: #000000;
+  }
+  

@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import MapFilter from '../ItemFilters/ItemMapFilter';
-import styles from './Itemfetch.module.css';
+import styles from '../itemStats.module.css';
 import ItemStatsFilter from '../ItemFilters/ItemStats/ItemStatsFilter';
 import { useFilteredItems, useAllStatKeys } from '../../../hooks/useItemFilter';
 import type { ItemData } from '../../../constants/itemData';
@@ -16,7 +16,6 @@ type ItemMap = Record<string, ItemData>;
 export default function ItemFetcher() {
   const [items, setItems] = useState<ItemMap | null>(null);
   const [version, setVersion] = useState<string | null>(null);
-  const [showText, setShowText] = useState(true);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [selectedMap, setSelectedMap] = useState<string | null>('11');
   const [selectedSort, setSelectedSort] = useState<string>('gold');
@@ -24,7 +23,6 @@ export default function ItemFetcher() {
   const [searchTerm, setSearchTerm] = useState<string>('');
    
   const containerRef = useRef<HTMLDivElement>(null);
-  const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
 
   const allStatKeys = useAllStatKeys(items);
   const filteredItems = useFilteredItems(items, selectedMap, selectedStats, selectedSort, searchTerm);
@@ -72,19 +70,10 @@ export default function ItemFetcher() {
     return () => observer.disconnect();
   }, []);
 
-  const autoHideText = containerSize.height < 400 && containerSize.width < 800;
-  const effectiveShowText = showText && !autoHideText;
 
   return (
     <div className={styles.itemFetcherContainer}>
       <h2 className={styles.itemFetcherHeader}>Items (Version: {version ?? 'loading...'})</h2>
-      
-      <button
-        onClick={() => setShowText((prev) => !prev)}
-        className={styles.toggleButton}
-      >
-        {showText ? 'Hide Text' : 'Show Text'}
-      </button>
 
       <ItemStatsFilter
         availableStats={allStatKeys}
@@ -93,19 +82,20 @@ export default function ItemFetcher() {
         
       />
 
-      <ItemSearchFilter onSearch={setSearchTerm} />
-
       {items && version ? (
         <MapFilter
           items={items}
           version={version}
-          showText={effectiveShowText}
           selectedMap={selectedMap}
           onSelectMap={setSelectedMap}
         />
       ) : (
         <p className="loading-text">Loading items...</p>
       )}
+      
+      <ItemSearchFilter onSearch={setSearchTerm} />
+
+
 
       <div className={styles.mainContent}>
         <div className={styles.itemsScrollContainer} ref={containerRef}>
@@ -118,15 +108,15 @@ export default function ItemFetcher() {
                   onDoubleClick={() =>
                     handleBuyItem(item as ItemData, `https://ddragon.leagueoflegends.com/cdn/${version}/img/item/${id}.png`)
                   }
-                  className={`${styles.itemCard} ${selectedItemId === id ? styles.selected : ''} ${!showText ? styles.compact : ''}`}
-                  style={{ minHeight: showText ? 150 : 90 }}
+                  className={`${styles.itemCard} ${selectedItemId === id ? styles.selected : ''}`}
+                  style={{ minHeight: 150}}
                 >
                   <img
                     src={`https://ddragon.leagueoflegends.com/cdn/${version}/img/item/${id}.png`}
                     alt={item.name}
                     className={styles.itemImage}
                   />
-                  {showText && (
+                  {(
                     <>
                       <h6 className={styles.itemName}>{item.name}</h6>
                       <div><strong>Gold:</strong> {item.gold.total}</div>
