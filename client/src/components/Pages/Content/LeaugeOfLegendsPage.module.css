@@ -56,8 +56,6 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.slideInText {
-}
 
 .slideInCard {
   --delay: 0ms; 
@@ -113,6 +111,7 @@
   left: 0;
   right: 0;
   width: 100%;
+  top: 60px;
   height: 100vh;
   will-change: transform;
   transition: transform 0.3s ease-out;

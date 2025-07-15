@@ -102,7 +102,6 @@ export default function ItemFetcher() {
   return (
     <div className={styles.itemFetcherContainer}>
       <h2 className={styles.itemFetcherHeader}>
-        Items (Version: {version ?? 'loading...'})
       </h2>
 
       <ItemStatsFilter
@@ -121,7 +120,6 @@ export default function ItemFetcher() {
       ) : (
         <p className={styles.loadingText}>Loading items...</p>
       )}
-
 
       <ItemSearchFilter onSearch={setSearchTerm} />
 
