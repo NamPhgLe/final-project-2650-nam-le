@@ -17,9 +17,6 @@ const ItemStatsFilter: React.FC<ItemStatsFilterProps> = ({
   selectedStats,
   onChange,
 }) => {
-  useEffect(() => {
-    console.log('Available stats:', availableStats);
-  }, [availableStats]);
 
   return (
     <div className={styles.container}>
