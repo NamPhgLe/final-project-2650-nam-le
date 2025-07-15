@@ -26,7 +26,7 @@ const HomePage: React.FC = () => {
   const handleGetStarted = () => {
     if (showOptions) {
       setShowOptions(false);
-      setSlideOutWelcome(false); 
+      setSlideOutWelcome(false);
       setSlideOutOptions(false);
     } else {
       setShowOptions(true);
@@ -50,6 +50,7 @@ const HomePage: React.FC = () => {
 
   return (
     <div className={styles.homePageLayout}>
+       <div className={styles.topBar} />
       <Options
         isVisible={showOptions}
         slideOut={slideOutOptions}

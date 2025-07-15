@@ -23,6 +23,7 @@ export default function ItemFetcher() {
   const [selectedSort, setSelectedSort] = useState<string>('gold');
   const [selectedStats, setSelectedStats] = useState<string[]>(['gold']);
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [showInventoryStats, setShowInventoryStats] = useState<boolean>(true);
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -46,6 +47,8 @@ export default function ItemFetcher() {
     increaseSlots,
     decreaseSlots,
   } = useInventory();
+
+  const hasInventoryItems = inventory.length > 0 || !!trinket;
 
   useEffect(() => {
     async function loadData() {
@@ -119,7 +122,9 @@ export default function ItemFetcher() {
         <p className={styles.loadingText}>Loading items...</p>
       )}
 
+
       <ItemSearchFilter onSearch={setSearchTerm} />
+
 
       <div className={styles.mainContent}>
         <div className={styles.itemsScrollContainer} ref={containerRef}>
@@ -144,10 +149,10 @@ export default function ItemFetcher() {
               </div>
             ))}
           </div>
-          </div>
-          {selectedItem && (
+        </div>
+        {selectedItem && (
           <div className={`${styles.panel} ${isClosing ? styles.exit : ''}`}>
- 
+
             <ItemDescription
               item={selectedItem}
               items={items!}
@@ -160,9 +165,9 @@ export default function ItemFetcher() {
           </div>
         )}
 
-        </div>
+      </div>
 
-      
+      <div className={styles.inventoryRow}>
         <Inventory
           items={inventory}
           trinket={trinket}
@@ -173,7 +178,12 @@ export default function ItemFetcher() {
           onDecreaseSlots={decreaseSlots}
         />
 
-        <InventoryStats items={inventory} trinket={trinket} />
+        {hasInventoryItems && (
+          <div className={`${styles.inventoryStatsPanel}`}>
+            <InventoryStats items={inventory} trinket={trinket} />
+          </div>
+        )}
       </div>
+    </div>
   );
 }

@@ -1,0 +1,55 @@
+.container {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(3, auto);
+    justify-content: start;
+    align-content: center;     
+    gap: 1rem;
+    overflow-x: auto;
+    overflow-y: hidden;         
+    padding: 1rem;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    height: 100%;                 
+    max-height: 100%;           
+  }
+  
+    .statLine {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 0.5rem 0.75rem;
+    white-space: nowrap;           
+  }
+  
+  .statLabel {
+    font-weight: bold;
+    font-size: 1rem;
+  }
+  
+  .separator {
+    margin: 0 0.5rem;
+    color: #aaa;
+  }
+  
+  .sourcesList {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    overflow: hidden;       
+  }
+  
+  .sourceItem {
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  

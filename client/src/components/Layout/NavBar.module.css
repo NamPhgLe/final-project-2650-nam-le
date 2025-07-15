@@ -1,16 +1,17 @@
 .navbar {
+  position: fixed;
+  top: 0;
+  right: 0;
   background-color: #fff;
   padding: 1rem;
   font-family: 'Inter', sans-serif;
   display: flex;
   justify-content: flex-end;
   user-select: none;
-
-  top: 0;
-  left: 0;
-  right: 0;
   z-index: 1000;
+  max-width: 15%;
 }
+
 .navList {
   list-style: none;
   display: flex;

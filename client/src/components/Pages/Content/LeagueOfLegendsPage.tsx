@@ -6,6 +6,7 @@ import ChampionStatsPage from './ChampionStatsPage';
 import { useInventory } from '../../../hooks/useInventory';
 import type { ItemData } from '../../../constants/itemData';
 import InventoryPage from './InventoryPage';
+import NavBar from '../../Layout/NavBar';
 type ItemMap = Record<string, ItemData>;
 
 const championMetaMap = championMetaRaw as unknown as RawMeta;
@@ -173,7 +174,7 @@ const LeagueOfLegendsPage: React.FC = () => {
               overflowY: 'hidden',
             }}
           >
-
+            
             <h1 style={{ fontFamily: 'Cinzel, serif', marginBottom: '1rem' }}>
               League of Legends - Read About Champions
             </h1>
