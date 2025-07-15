@@ -1,19 +1,17 @@
 .container {
-    display: grid;
-    grid-auto-flow: column;
-    grid-template-rows: repeat(3, auto);
-    justify-content: start;
-    align-content: center;     
-    gap: 1rem;
-    overflow-x: auto;
-    overflow-y: hidden;         
-    padding: 1rem;
-    box-sizing: border-box;
-    background-color: #ffffff;
-    height: 100%;                 
-    max-height: 100%;           
+    display: flex;
+    flex-direction: column;
   }
   
+  .scrollArea {
+    display: flex;
+    flex-wrap: wrap;
+    max-height: calc(3 * 3rem);
+    overflow-x: auto; 
+    overflow-y: hidden; 
+    gap: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
     .statLine {
     display: flex;
     flex-wrap: nowrap;
@@ -53,3 +51,10 @@
     flex-shrink: 0;
   }
   
+  .itemIcon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    vertical-align: middle;
+    margin-left: 0.25rem;
+  }
