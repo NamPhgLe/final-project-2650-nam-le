@@ -264,3 +264,10 @@
     min-width: 0;   
     overflow-y: auto;
   }
+
+  .filters {
+    display: flex;
+    flex-direction: row;   /* make sure it's horizontal */
+    align-items: center;   /* align vertically */
+    gap: 1rem;             /* space between them */
+  }

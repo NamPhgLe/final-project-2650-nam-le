@@ -110,19 +110,9 @@ export default function ItemFetcher() {
         onChange={setSelectedStats}
       />
 
-      {items && version ? (
-        <MapFilter
-          items={items}
-          version={version}
-          selectedMap={selectedMap}
-          onSelectMap={setSelectedMap}
-        />
-      ) : (
-        <p className={styles.loadingText}>Loading items...</p>
-      )}
-
-      <ItemSearchFilter onSearch={setSearchTerm} />
-
+      <div className={styles.filters}>
+        <ItemSearchFilter onSearch={setSearchTerm} />
+      </div>
 
       <div className={styles.mainContent}>
         <div className={styles.itemsScrollContainer} ref={containerRef}>

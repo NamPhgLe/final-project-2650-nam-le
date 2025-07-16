@@ -65,7 +65,7 @@ export default function InventoryStats({ items, trinket }: InventoryStatsProps) 
   if (Object.keys(statContributions).length === 0) {
     return (
       <div className={styles.container}>
-        <h3 className={styles.header}>Combined Stats</h3>
+        <h3 className={styles.header}>Item Stats</h3>
         <p>No stats yet.</p>
       </div>
     );

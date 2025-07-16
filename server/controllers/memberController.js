@@ -4,11 +4,41 @@ const { MongoClient } = require("mongodb");
 const user = require(`${__dirname}/../models/user`);
 
 const memberController = express.Router();
+const jwt = require('jsonwebtoken')
+require('dotenv').config();
+
+//token generation
+function generateToken(payload){
+    return jwt.sign(payload, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRES_IN || '1h'
+    });
+}
+
+//authenticate check
+function authenticateToken(req, res, next) {
+    const token = req.cookies.jwt;
+  
+    if (!token) return res.sendStatus(401);
+  
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+      if (err) return res.sendStatus(403);
+  
+      req.user = user;
+      next();
+    });
+  }
+
+// protected 
+memberController.get('/protected', authenticateToken, (req, res) => {
+    res.json({
+        message: "This is protected",
+        user: req.user
+    });
+});
 
 // MongoDB connection setup
 const uri = process.env.URI || 'mongodb://127.0.0.1:27017/game-simulator';
 const client = new MongoClient(uri);
-let authenticated = [];
 
 (async () => {
     try {
@@ -20,13 +50,14 @@ let authenticated = [];
 })();
 
 const SALT_ROUNDS = 10;
+
 // Signup Route
-memberController.post('/signup', async (request, response) => {
+memberController.post('/signup', async (req, res) => {
     const collection = client.db().collection('members');
-    const { email, password } = request.body;
+    const { email, password } = req.body;
 
     if (!email || !password) {
-        return response.status(400).json({
+        return res.status(400).json({
             error: "Email and password are required.",
         });
     }
@@ -34,7 +65,7 @@ memberController.post('/signup', async (request, response) => {
     const existing = await collection.findOne({ email });
 
     if (existing) {
-        return response.status(200).json({
+        return res.status(200).json({
             error: `Email already exists. Choose a different one.`,
         });
     }
@@ -43,61 +74,75 @@ memberController.post('/signup', async (request, response) => {
     const newMember = user(email, hashed);
 
     await collection.insertOne(newMember);
-    authenticated.push(email);
 
-    response.status(200).json({
+    const token = generateToken({email});
+
+    res.cookie('jwt', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 3600000,
+        sameSite: 'lax',
+    });
+
+    res.status(200).json({
         success: {
             email,
             message: `${email} was added successfully to members.`,
+            token
         },
     });
 });
 
 // Signin Route
-memberController.post('/signin', async (request, response) => {
+memberController.post('/signin', async (req, res) => {
     const collection = client.db().collection('members');
-    const { email, username, password } = request.body;
+    const { email, username, password } = req.body;
 
     if ((!email && !username) || !password) {
-        return response.status(400).json({
+        return res.status(400).json({
             error: "Email and password are required.",
         });
     }
+
     const query = email ? {email} : {username};
     const member = await collection.findOne(query);
 
     if (!member) {
-        return response.status(200).json({
+        return res.status(200).json({
             error: `Email or password is incorrect.`,
         });
     }
 
     const isMatched = await bcrypt.compare(password, member.hashedPassword);
-    console.log()
     if (!isMatched) {
-        return response.status(200).json({
+        return res.status(200).json({
             error: `Email or password is incorrect.`,
         });
     }
 
-    authenticated.push(member.email);
-    response.status(200).json({
+    const token = generateToken({email: member.email})
+    res.cookie('jwt', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 3600000, 
+        sameSite: 'lax',
+    })
+    res.status(200).json({
         success: `${member.email} logged in successfully!`,
+        token
     });
 });
 
-// Signout Route
-memberController.post('/signout', (request, response) => {
-    const { email } = request.body;
+// logout Route
+memberController.post('/signout', (req, res) => {
+    res.clearCookie('jwt', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+      });
 
-    authenticated = authenticated.filter((e) => e !== email);
-    console.log("authenticated", authenticated);
-
-    response.status(200).json({
-        success: {
-            email,
-            message: `${email} logged out successfully.`,
-        },
+      res.status(200).json({
+        success: 'logged out successfully.'
     });
 });
 

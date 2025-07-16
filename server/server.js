@@ -2,10 +2,11 @@
 const mongoose = require('mongoose');
 const express = require('express');
 const cors = require("cors");
-require('dotenv').config();
+const cookieParser = require('cookie-parser');
 const memberController = require(`./controllers/memberController`)
-
 const app = express();
+
+require('dotenv').config();
 
 // MongoDB connection
 mongoose.connect(process.env.URI, {
@@ -17,15 +18,14 @@ mongoose.connect(process.env.URI, {
 
 // Express setup
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors({
-    origin: 'http://localhost:5173'
-
+    origin: 'http://localhost:5173',
+    credentials: true
 }));
 
 
 app.use('/api/member', memberController); 
-// app.post("/api/user/signUp", signUpUser)
-// app.post("/api/user/login", loginUser)
 
 // Start the server
 app.listen(5000, () => {
